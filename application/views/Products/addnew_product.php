@@ -71,6 +71,12 @@
     <input class="form-control" type="text" value="" name="booster_volume" id="example-text-input" required>
                                                 </div>
                                             </div>
+            <div class="form-group row">
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Direct Referal Bonus</label>
+                                                <div class="col-sm-10">
+    <input class="form-control" type="text" value="" name="direct_sponser_bonus" id="example-text-input" required>
+                                                </div>
+                                            </div>
                                              <div class="form-group row">
                                                 <label for="example-text-input" class="col-sm-2 col-form-label">Purchase Cost</label>
                                                 <div class="col-sm-10">

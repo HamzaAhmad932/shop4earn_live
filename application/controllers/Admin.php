@@ -324,7 +324,8 @@ class Admin extends CI_Controller {
 				'img_name' =>$data1['file_name'],
 				'img_path' =>$target_file1,
 				'img_path1'=> $target_file2,
-				'img_path2'=> $target_file3
+				'img_path2'=> $target_file3,
+				'direct_sponser_bonus'=>$this->input->post('direct_sponser_bonus')
 			);
 
 		  if($this->Admin_model->insert_product($data)){
@@ -422,7 +423,8 @@ class Admin extends CI_Controller {
     			 	'net_amount'=>$this->input->post('net_amount') ,
     			 	'm_date'=>$m_date,
     			 	'img_path'=> $target_file,
-    			 	'img_name'=> $data['file_name']
+    			 	'img_name'=> $data['file_name'],
+    			 	'direct_sponser_bonus'=> $this->input->post('direct_sponser_bonus')
     			 );
 		    $this->Admin_model->get_product_update($data,$id);
 		    redirect('Admin/Products');
