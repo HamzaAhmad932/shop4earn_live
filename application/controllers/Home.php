@@ -342,6 +342,8 @@ class Home extends CI_Controller {
 
         $email = !empty($this->input->post('email')) ? $this->input->post('email') : '';
         $user_id = $this->Home_model->get_user_id();
+
+        $user_id = $user_id + 1;
         
         $referal_id = empty($this->input->post('referal_id')) ? 
                         $this->Home_model->get_default_parent_id() : 
@@ -349,7 +351,7 @@ class Home extends CI_Controller {
 
 
         $data = [
-                    'user_id'   => $user_id + 1,
+                    'user_id'   => $user_id,
                     'parent_id' => 0,
                     'full_name' => $this->input->post('full_name'),
                     'mobile'    => $this->input->post('mobile'),

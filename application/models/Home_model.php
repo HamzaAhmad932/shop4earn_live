@@ -429,7 +429,8 @@ public function chk_referal_id($referal_id){
 
     }
     
-	public function get_upline_users($user_id,$pid, $test = false){
+public function get_upline_users($user_id,$pid, $test = false){
+
 
 		$this->db->select_sum('basic_vol');
 		$this->db->where_in('id', $pid);
@@ -510,14 +511,17 @@ public function chk_referal_id($referal_id){
 		$level1_id = $query->row();
 
 		if($level1_id->parent_id == '0'){
+
 			if($this->verify_self_parent_position($level1_id->referal_id)){
 				$level1_id = $level1_id->referal_id;
 			}else{
+
 				$level1_id = $this->find_tree_node($level1_id->referal_id);
 			}
 		}else{
 			$level1_id= $level1_id->parent_id;
 		}
+
 	    
 	    
 	    $this->db->select('*');
@@ -546,365 +550,364 @@ public function chk_referal_id($referal_id){
 		//level 2
 		if(!empty($level1_id) && !in_array($level1_id, $except)){
 
-		$this->db->select('parent_id');
-		$this->db->from('users');
-		$this->db->where('user_id',$level1_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level2_id = $query->row();
-	    $level2_id= $level2_id->parent_id;
+				$this->db->select('parent_id');
+				$this->db->from('users');
+				$this->db->where('user_id',$level1_id);
+				$this->db->where('type','2');
+				$query=$this->db->get();
+				$level2_id = $query->row();
+			    $level2_id= $level2_id->parent_id;
 
-	    $this->db->select('*');
-		$this->db->from('users');
-		$this->db->where('referal_id',$level2_id);
-		$this->db->where('user_id !=', $user_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level_2_basic=$query->num_rows();
+			    $this->db->select('*');
+				$this->db->from('users');
+				$this->db->where('referal_id',$level2_id);
+				$this->db->where('user_id !=', $user_id);
+				$this->db->where('type','2');
+				$query=$this->db->get();
+				$level_2_basic=$query->num_rows();
 
-		if($level_2_basic >= $basic_users || $level_2_basic >= $standard_users || $level_2_basic >= $silver_users || $level_2_basic >= $gold_users || $level_2_basic >= $diamond_users ){
-		$comission=$product_price * $ninth_com/$percentage;
+			if($level_2_basic >= $basic_users || $level_2_basic >= $standard_users || $level_2_basic >= $silver_users || $level_2_basic >= $gold_users || $level_2_basic >= $diamond_users ){
+				$comission=$product_price * $ninth_com/$percentage;
 
-		$winner = new stdClass();
-		$winner->user_id = $level2_id;
-		$winner->u_comission = $comission;
-		$t_comission += $comission;
-		array_push($winners, $winner);
+				$winner = new stdClass();
+				$winner->user_id = $level2_id;
+				$winner->u_comission = $comission;
+				$t_comission += $comission;
+				array_push($winners, $winner);
+			}
 		}
-	}
 
 
 		//level 3
-	if(!empty($level2_id) && !in_array($level2_id, $except)){
+		if(!empty($level2_id) && !in_array($level2_id, $except)){
 
-		$this->db->select('parent_id');
-		$this->db->from('users');
-		$this->db->where('user_id',$level2_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level3_id = $query->row();
-	    $level3_id= $level3_id->parent_id;
+			$this->db->select('parent_id');
+			$this->db->from('users');
+			$this->db->where('user_id',$level2_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level3_id = $query->row();
+		    $level3_id= $level3_id->parent_id;
 
-	    $this->db->select('*');
-		$this->db->from('users');
-		$this->db->where('referal_id',$level3_id);
-		$this->db->where('user_id !=', $user_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level_3_basic=$query->num_rows();
-		if($level_3_basic >= $basic_users || $level_3_basic >= $standard_users || $level_3_basic >= $silver_users || $level_3_basic >= $gold_users || $level_3_basic >= $diamond_users ){
-		$comission=$product_price * $eight_com/$percentage;
+		    $this->db->select('*');
+			$this->db->from('users');
+			$this->db->where('referal_id',$level3_id);
+			$this->db->where('user_id !=', $user_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level_3_basic=$query->num_rows();
+			if($level_3_basic >= $basic_users || $level_3_basic >= $standard_users || $level_3_basic >= $silver_users || $level_3_basic >= $gold_users || $level_3_basic >= $diamond_users ){
+			$comission=$product_price * $eight_com/$percentage;
 
-		$winner = new stdClass();
-		$winner->user_id = $level3_id;
-		$winner->u_comission = $comission;
-		$t_comission += $comission;
-		array_push($winners, $winner);
-		}
- 	}
+			$winner = new stdClass();
+			$winner->user_id = $level3_id;
+			$winner->u_comission = $comission;
+			$t_comission += $comission;
+			array_push($winners, $winner);
+			}
+	 	}
 
 
 
 		//level 4
- 		if(!empty($level3_id) && !in_array($level3_id, $except)){
+		if(!empty($level3_id) && !in_array($level3_id, $except)){
 
-		$this->db->select('parent_id');
-		$this->db->from('users');
-		$this->db->where('user_id',$level3_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level4_id = $query->row();
-	    $level4_id= $level4_id->parent_id;
-	    $this->db->select('*');
-		$this->db->from('users');
-		$this->db->where('referal_id',$level4_id);
-		$this->db->where('user_id !=', $user_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level_4_basic=$query->num_rows();
-		if($level_4_basic >= $basic_users || $level_4_basic >= $standard_users || $level_4_basic >= $silver_users || $level_4_basic >= $gold_users || $level_4_basic >= $diamond_users ){
-		$comission=$product_price * $seven_com/$percentage;
-	    
-	    $winner = new stdClass();
-		$winner->user_id = $level4_id;
-		$winner->u_comission = $comission;
-		$t_comission += $comission;
-		array_push($winners, $winner);
+			$this->db->select('parent_id');
+			$this->db->from('users');
+			$this->db->where('user_id',$level3_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level4_id = $query->row();
+		    $level4_id= $level4_id->parent_id;
+		    $this->db->select('*');
+			$this->db->from('users');
+			$this->db->where('referal_id',$level4_id);
+			$this->db->where('user_id !=', $user_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level_4_basic=$query->num_rows();
+			if($level_4_basic >= $basic_users || $level_4_basic >= $standard_users || $level_4_basic >= $silver_users || $level_4_basic >= $gold_users || $level_4_basic >= $diamond_users ){
+			$comission=$product_price * $seven_com/$percentage;
+		    
+		    $winner = new stdClass();
+			$winner->user_id = $level4_id;
+			$winner->u_comission = $comission;
+			$t_comission += $comission;
+			array_push($winners, $winner);
+			}
 		}
-	}
 
 
-		//level 5
-	if(!empty($level4_id) && !in_array($level4_id, $except)){
+			//level 5
+		if(!empty($level4_id) && !in_array($level4_id, $except)){
 
-		$this->db->select('parent_id');
-		$this->db->from('users');
-		$this->db->where('user_id',$level4_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level5_id = $query->row();
-	    $level5_id= $level5_id->parent_id;
-	    $this->db->select('*');
-		$this->db->from('users');
-		$this->db->where('referal_id',$level5_id);
-		$this->db->where('user_id !=', $user_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level_5_basic=$query->num_rows();
-		if($level_5_basic >= $basic_users || $level_5_basic >= $standard_users || $level_5_basic >= $silver_users || $level_5_basic >= $gold_users || $level_5_basic >= $diamond_users ){
-		$comission=$product_price * $six_com/$percentage;
-	    $winner = new stdClass();
-		$winner->user_id = $level5_id;
-		$winner->u_comission = $comission;
-		$t_comission += $comission;
-		array_push($winners, $winner);
+			$this->db->select('parent_id');
+			$this->db->from('users');
+			$this->db->where('user_id',$level4_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level5_id = $query->row();
+		    $level5_id= $level5_id->parent_id;
+		    $this->db->select('*');
+			$this->db->from('users');
+			$this->db->where('referal_id',$level5_id);
+			$this->db->where('user_id !=', $user_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level_5_basic=$query->num_rows();
+			if($level_5_basic >= $basic_users || $level_5_basic >= $standard_users || $level_5_basic >= $silver_users || $level_5_basic >= $gold_users || $level_5_basic >= $diamond_users ){
+				$comission=$product_price * $six_com/$percentage;
+			    $winner = new stdClass();
+				$winner->user_id = $level5_id;
+				$winner->u_comission = $comission;
+				$t_comission += $comission;
+				array_push($winners, $winner);
+			}
 		}
-	    }
 
-		//level 6
+			//level 6
 		if(!empty($level5_id) && !in_array($level5_id, $except)){
 
-		$this->db->select('parent_id');
-		$this->db->from('users');
-		$this->db->where('user_id',$level5_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level6_id = $query->row();
-	    $level6_id= $level6_id->parent_id;
-	    $this->db->select('*');
-		$this->db->from('users');
-		$this->db->where('referal_id',$level6_id);
-		$this->db->where('user_id !=', $user_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level_6_basic=$query->num_rows();
-		if($level_6_basic >= $basic_users || $level_6_basic >= $standard_users || $level_6_basic >= $silver_users || $level_6_basic >= $gold_users || $level_6_basic >= $diamond_users ){
-		$comission=$product_price * $five_com/$percentage;
-	    $winner = new stdClass();
-		$winner->user_id = $level6_id;
-		$winner->u_comission = $comission;
-		$t_comission += $comission;
-		array_push($winners, $winner);
+			$this->db->select('parent_id');
+			$this->db->from('users');
+			$this->db->where('user_id',$level5_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level6_id = $query->row();
+		    $level6_id= $level6_id->parent_id;
+		    $this->db->select('*');
+			$this->db->from('users');
+			$this->db->where('referal_id',$level6_id);
+			$this->db->where('user_id !=', $user_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level_6_basic=$query->num_rows();
+			if($level_6_basic >= $basic_users || $level_6_basic >= $standard_users || $level_6_basic >= $silver_users || $level_6_basic >= $gold_users || $level_6_basic >= $diamond_users ){
+			$comission=$product_price * $five_com/$percentage;
+		    $winner = new stdClass();
+			$winner->user_id = $level6_id;
+			$winner->u_comission = $comission;
+			$t_comission += $comission;
+			array_push($winners, $winner);
+			}
 		}
-	}
 
 
-        //level 7
-	if(!empty($level6_id) && !in_array($level6_id, $except)){
+	        //level 7
+		if(!empty($level6_id) && !in_array($level6_id, $except)){
 
-		$this->db->select('parent_id');
-		$this->db->from('users');
-		$this->db->where('user_id',$level6_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level7_id = $query->row();
-	    $level7_id= $level7_id->parent_id;
-	    $this->db->select('*');
-		$this->db->from('users');
-		$this->db->where('referal_id',$level7_id);
-		$this->db->where('user_id !=', $user_id);
-		$this->db->where('type','2');
-		//$this->db->where('referal_id','2');
-		$query=$this->db->get();
-		$level_7_basic=$query->num_rows();
-		if($level_7_basic >= $basic_users || $level_7_basic >= $standard_users || $level_7_basic >= $silver_users || $level_7_basic >= $gold_users || $level_7_basic >= $diamond_users ){
-		$comission=$product_price * $four_com/$percentage;
-	    $winner = new stdClass();
-		$winner->user_id = $level7_id;
-		$winner->u_comission = $comission;
-		$t_comission += $comission;
-		array_push($winners, $winner);
+			$this->db->select('parent_id');
+			$this->db->from('users');
+			$this->db->where('user_id',$level6_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level7_id = $query->row();
+		    $level7_id= $level7_id->parent_id;
+		    $this->db->select('*');
+			$this->db->from('users');
+			$this->db->where('referal_id',$level7_id);
+			$this->db->where('user_id !=', $user_id);
+			$this->db->where('type','2');
+			//$this->db->where('referal_id','2');
+			$query=$this->db->get();
+			$level_7_basic=$query->num_rows();
+			if($level_7_basic >= $basic_users || $level_7_basic >= $standard_users || $level_7_basic >= $silver_users || $level_7_basic >= $gold_users || $level_7_basic >= $diamond_users ){
+			$comission=$product_price * $four_com/$percentage;
+		    $winner = new stdClass();
+			$winner->user_id = $level7_id;
+			$winner->u_comission = $comission;
+			$t_comission += $comission;
+			array_push($winners, $winner);
+			}
 		}
-	}
 
 
 
-        //level 8
-	if(!empty($level7_id) && !in_array($level7_id, $except)){
+	        //level 8
+		if(!empty($level7_id) && !in_array($level7_id, $except)){
 
-		$this->db->select('parent_id');
-		$this->db->from('users');
-		$this->db->where('user_id',$level7_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level8_id = $query->row();
-	    $level8_id= $level8_id->parent_id;
-	    $this->db->select('*');
-		$this->db->from('users');
-		$this->db->where('referal_id',$level8_id);
-		$this->db->where('user_id !=', $user_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level_8_basic=$query->num_rows();
-		if($level_8_basic >= $basic_users || $level_8_basic >= $standard_users || $level_8_basic >= $silver_users || $level_8_basic >= $gold_users || $level_8_basic >= $diamond_users ){
-		$comission=$product_price * $three_com/$percentage;
-	    $winner = new stdClass();
-		$winner->user_id = $level8_id;
-		$winner->u_comission = $comission;
-		$t_comission += $comission;
-		array_push($winners, $winner);
+			$this->db->select('parent_id');
+			$this->db->from('users');
+			$this->db->where('user_id',$level7_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level8_id = $query->row();
+		    $level8_id= $level8_id->parent_id;
+		    $this->db->select('*');
+			$this->db->from('users');
+			$this->db->where('referal_id',$level8_id);
+			$this->db->where('user_id !=', $user_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level_8_basic=$query->num_rows();
+			if($level_8_basic >= $basic_users || $level_8_basic >= $standard_users || $level_8_basic >= $silver_users || $level_8_basic >= $gold_users || $level_8_basic >= $diamond_users ){
+			$comission=$product_price * $three_com/$percentage;
+		    $winner = new stdClass();
+			$winner->user_id = $level8_id;
+			$winner->u_comission = $comission;
+			$t_comission += $comission;
+			array_push($winners, $winner);
+			}
 		}
-	}
 
 
-        //level 9
-	if(!empty($level8_id) && !in_array($level8_id, $except)){
+	        //level 9
+		if(!empty($level8_id) && !in_array($level8_id, $except)){
 
-		$this->db->select('parent_id');
-		$this->db->from('users');
-		$this->db->where('user_id',$level8_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level9_id = $query->row();
-	    $level9_id= $level9_id->parent_id;
-	    $this->db->select('*');
-		$this->db->from('users');
-		$this->db->where('referal_id',$level9_id);
-		$this->db->where('user_id !=', $user_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level_9_basic=$query->num_rows();
-		if($level_9_basic >= $basic_users || $level_9_basic >= $standard_users || $level_9_basic >= $silver_users || $level_9_basic >= $gold_users || $level_9_basic >= $diamond_users ){
-		$comission=$product_price * $two_com/$percentage;
-	    $winner = new stdClass();
-		$winner->user_id = $level9_id;
-		$winner->u_comission = $comission;
-		$t_comission += $comission;
-		array_push($winners, $winner);
+			$this->db->select('parent_id');
+			$this->db->from('users');
+			$this->db->where('user_id',$level8_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level9_id = $query->row();
+		    $level9_id= $level9_id->parent_id;
+		    $this->db->select('*');
+			$this->db->from('users');
+			$this->db->where('referal_id',$level9_id);
+			$this->db->where('user_id !=', $user_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level_9_basic=$query->num_rows();
+			if($level_9_basic >= $basic_users || $level_9_basic >= $standard_users || $level_9_basic >= $silver_users || $level_9_basic >= $gold_users || $level_9_basic >= $diamond_users ){
+			$comission=$product_price * $two_com/$percentage;
+		    $winner = new stdClass();
+			$winner->user_id = $level9_id;
+			$winner->u_comission = $comission;
+			$t_comission += $comission;
+			array_push($winners, $winner);
+			}
 		}
-	}
 
 
-        //level 10
+	    //level 10
 		if(!empty($level9_id) && !in_array($level9_id, $except)){
 
-		$this->db->select('parent_id');
-		$this->db->from('users');
-		$this->db->where('user_id',$level9_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level10_id = $query->row();
-	    $level10_id= $level10_id->parent_id;
-	    $this->db->select('*');
-		$this->db->from('users');
-		$this->db->where('referal_id',$level10_id);
-		$this->db->where('user_id !=', $user_id);
-		$this->db->where('type','2');
-		$query=$this->db->get();
-		$level_10_basic=$query->num_rows();
-		if($level_10_basic >= $basic_users || $level_10_basic >= $standard_users || $level_10_basic >= $silver_users || $level_10_basic >= $gold_users || $level_10_basic >= $diamond_users ){
-		$comission=$product_price * $one_com/$percentage;
-	    $winner = new stdClass();
-		$winner->user_id = $level10_id;
-		$winner->u_comission = $comission;
-		$t_comission += $comission;
-		array_push($winners, $winner);
-		}
-	}
-	
-	if($test){
-	
-    	print_r('Total_commission_calculated: '.$t_comission);
-    	echo "<br>";
-    	echo "<table style='border: 1px solid black'>";
-    	echo "<thead>";
-    	echo "<tr>";
-    	echo "<th style='border: 1px solid black'>User ID</th>";
-    	echo "<th style='border: 1px solid black'>Commission</th>";
-    	echo "</tr>";
-    	echo "</thead>";
-    	echo "<tbody>";
-    	echo "<tr>";
-    	foreach($winners as $w){
-    	    echo "<tr>";
-    	    echo "<td style='border: 1px solid black'>$w->user_id</td>";   
-    	    echo "<td style='border: 1px solid black'>$w->u_comission</td>";   
-    	echo "</tr>";
-    	    
-    	}
-    	echo "</tr>";
-    	echo "</tbody>";
-    	echo "</table>";
-    	echo "<br>";
-    	print_r('Total_commission_available: '.$product_price);
-    	echo "<br>";
-    }
-    
-	if(round($t_comission) > round($product_price)){
-	    $percentage = ($t_comission/$product_price)*100;
-        
-        goto recalculate_basic;
-        
-		foreach($winners as $winr){
-			$winr->u_comission -= $subtract;
-			$com_round = round($winr->u_comission, 2);
-			
-			if(!$test){
-			    $this->update_users_for_basic_comission($winr->user_id, $com_round);   
+			$this->db->select('parent_id');
+			$this->db->from('users');
+			$this->db->where('user_id',$level9_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level10_id = $query->row();
+		    $level10_id= $level10_id->parent_id;
+		    $this->db->select('*');
+			$this->db->from('users');
+			$this->db->where('referal_id',$level10_id);
+			$this->db->where('user_id !=', $user_id);
+			$this->db->where('type','2');
+			$query=$this->db->get();
+			$level_10_basic=$query->num_rows();
+			if($level_10_basic >= $basic_users || $level_10_basic >= $standard_users || $level_10_basic >= $silver_users || $level_10_basic >= $gold_users || $level_10_basic >= $diamond_users ){
+			$comission=$product_price * $one_com/$percentage;
+		    $winner = new stdClass();
+			$winner->user_id = $level10_id;
+			$winner->u_comission = $comission;
+			$t_comission += $comission;
+			array_push($winners, $winner);
 			}
 		}
-	}
-	else{
+		
+		if($test){
+		
+	    	print_r('Total_commission_calculated: '.$t_comission);
+	    	echo "<br>";
+	    	echo "<table style='border: 1px solid black'>";
+	    	echo "<thead>";
+	    	echo "<tr>";
+	    	echo "<th style='border: 1px solid black'>User ID</th>";
+	    	echo "<th style='border: 1px solid black'>Commission</th>";
+	    	echo "</tr>";
+	    	echo "</thead>";
+	    	echo "<tbody>";
+	    	echo "<tr>";
+	    	foreach($winners as $w){
+	    	    echo "<tr>";
+	    	    echo "<td style='border: 1px solid black'>$w->user_id</td>";   
+	    	    echo "<td style='border: 1px solid black'>$w->u_comission</td>";   
+	    	echo "</tr>";
+	    	    
+	    	}
+	    	echo "</tr>";
+	    	echo "</tbody>";
+	    	echo "</table>";
+	    	echo "<br>";
+	    	print_r('Total_commission_available: '.$product_price);
+	    	echo "<br>";
+	    }
+	    
+		if(round($t_comission) > round($product_price)){
+		    $percentage = ($t_comission/$product_price)*100;
+	        
+	        goto recalculate_basic;
+	        
+			foreach($winners as $winr){
+				$winr->u_comission -= $subtract;
+				$com_round = round($winr->u_comission, 2);
+				
+				if(!$test){
+				    $this->update_users_for_basic_comission($winr->user_id, $com_round);   
+				}
+			}
+		}
+		else{
 
-		foreach ($winners as $key => $winner) {
-			$com_round_full = round($winner->u_comission, 2);
-			if(!$test){
-			    $this->update_users_for_basic_comission($winner->user_id, $com_round_full);   
+			foreach ($winners as $key => $winner) {
+				$com_round_full = round($winner->u_comission, 2);
+				if(!$test){
+				    $this->update_users_for_basic_comission($winner->user_id, $com_round_full);   
+				}
 			}
 		}
-	}
-	
-	if($test){
-	
-    	echo "---------------------------------------------------------------------------------------------------------------";
-    	echo "<br>";
-    	echo "-----------------------------------------Delivered Commmission-----------------------------------------";
-    	echo "<br>";
-    	echo "---------------------------------------------------------------------------------------------------------------";
-    	echo "<br>";
-    	
-    	print_r('Total_commission_calculated'.$t_comission);
-    	echo "<br>";
-    	echo "<table style='border: 1px solid black'>";
-    	echo "<thead>";
-    	echo "<tr>";
-    	echo "<th style='border: 1px solid black'>User ID</th>";
-    	echo "<th style='border: 1px solid black'>Commission</th>";
-    	echo "</tr>";
-    	echo "</thead>";
-    	echo "<tbody>";
-    	foreach($winners as $w){
-    	    echo "<tr>";
-    	    echo "<td style='border: 1px solid black'>$w->user_id</td>";   
-    	    echo "<td style='border: 1px solid black'>$w->u_comission</td>";   
-    	echo "</tr>";
-    	    
-    	}
-    	echo "</tbody>";
-    	echo "</table>";
-    	echo "<br>";
-    	print_r('Total_commission_available'.$product_price);
-    	echo "<br>";
-        die();
-        return;
-    }
-	$last_user = end($winners);
+		
+		if($test){
+		
+	    	echo "---------------------------------------------------------------------------------------------------------------";
+	    	echo "<br>";
+	    	echo "-----------------------------------------Delivered Commmission-----------------------------------------";
+	    	echo "<br>";
+	    	echo "---------------------------------------------------------------------------------------------------------------";
+	    	echo "<br>";
+	    	
+	    	print_r('Total_commission_calculated'.$t_comission);
+	    	echo "<br>";
+	    	echo "<table style='border: 1px solid black'>";
+	    	echo "<thead>";
+	    	echo "<tr>";
+	    	echo "<th style='border: 1px solid black'>User ID</th>";
+	    	echo "<th style='border: 1px solid black'>Commission</th>";
+	    	echo "</tr>";
+	    	echo "</thead>";
+	    	echo "<tbody>";
+	    	foreach($winners as $w){
+	    	    echo "<tr>";
+	    	    echo "<td style='border: 1px solid black'>$w->user_id</td>";   
+	    	    echo "<td style='border: 1px solid black'>$w->u_comission</td>";   
+	    	echo "</tr>";
+	    	    
+	    	}
+	    	echo "</tbody>";
+	    	echo "</table>";
+	    	echo "<br>";
+	    	print_r('Total_commission_available'.$product_price);
+	    	echo "<br>";
+	        die();
+	        return;
+	    }
+		$last_user = end($winners);
 
 	return !empty($last_user->user_id) ? $last_user->user_id : 0;
 
+}
 
-	}
+public function update_users_for_basic_comission($user_id, $comission){
 
-	public function update_users_for_basic_comission($user_id, $comission){
+	$this->db->trans_start();
+	$this->db->set('comission', "comission + $comission", FALSE);
+	$this->db->where('user_id', $user_id);
+	$this->db->where('type','2');
+    $user = $this->db->update('users');
 
-		$this->db->trans_start();
-		$this->db->set('comission', "comission + $comission", FALSE);
-		$this->db->where('user_id', $user_id);
-		$this->db->where('type','2');
-        $this->db->update('users');
-
-        $this->db->trans_complete();
-	}
+    $this->db->trans_complete();
+}
 	
 	
 	
