@@ -506,9 +506,10 @@ public function chk_referal_id($referal_id){
 		$this->db->select('parent_id');
 		$this->db->from('users');
 		$this->db->where('user_id',$user_id);
-		$this->db->where('type','2');
 		$query=$this->db->get();
 		$level1_id = $query->row();
+
+		var_dump($level1_id);
 
 		if($level1_id->parent_id == '0'){
 			if($this->verify_self_parent_position($level1_id->referal_id)){
@@ -1030,6 +1031,8 @@ public function chk_referal_id($referal_id){
 		//$this->db->where('type','2');
 		$query=$this->db->get();
 		$level1_id = $query->row();
+
+		var_dump($level1_id);
 
 		if($level1_id->parent_id == '0'){
 			if($this->verify_self_parent_position($level1_id->referal_id)){
