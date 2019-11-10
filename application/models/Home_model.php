@@ -188,6 +188,51 @@ foreach($add_att as $key => $id) {
 return $return;
 }
 
+public function find_tree_node($referal_id){
+    
+	    $this->db->select("GROUP_CONCAT(user_id) as my_ids");
+	    $this->db->where_in("parent_id", $referal_id);
+	    $this->db->where("type", "2");
+	    $query = $this->db->get('users')->result_array();
+	    $my_ids     =   $query[0]['my_ids'];
+	    if($my_ids == null){
+	        if(is_array($referal_id)){
+	            return $referal_id[0];
+	        }else{
+	            return $referal_id;
+	        }
+	    }
+	    $childs   =   explode(',',$my_ids);
+	    
+	    foreach($childs as $ch){
+	        
+	        $this->db->select("*");
+	        $this->db->where("parent_id", $ch);
+	        $this->db->where("type", "2");
+	        $query = $this->db->get('users')->num_rows();
+	        
+	        if(!is_array($ch) &&  $query < 2){
+	            return $ch;
+	        }
+	    }
+	    
+	    return $this->find_tree_node($childs);
+	}
+
+	public function verify_self_parent_position($referal_id){
+
+		$this->db->select("*");
+        $this->db->where("parent_id", $referal_id);
+        $this->db->where("type", "2");
+        $query = $this->db->get('users')->num_rows();
+        
+        if(!is_array($referal_id) &&  $query < 2){
+            return true;
+        }else{
+        	return false;
+        }
+	}
+
 public function chk_referal_id($referal_id){
     
     $this->db->select("GROUP_CONCAT(user_id) as my_ids");
@@ -464,7 +509,16 @@ public function chk_referal_id($referal_id){
 		$this->db->where('type','2');
 		$query=$this->db->get();
 		$level1_id = $query->row();
-	    $level1_id= $level1_id->parent_id;
+
+		if($level1_id->parent_id == '0'){
+			if($this->verify_self_parent_position($level1_id->referal_id)){
+				$level1_id = $level1_id->referal_id;
+			}else{
+				$level1_id = $this->find_tree_node($level1_id->referal_id);
+			}
+		}else{
+			$level1_id= $level1_id->parent_id;
+		}
 	    
 	    
 	    $this->db->select('*');
@@ -973,11 +1027,20 @@ public function chk_referal_id($referal_id){
 		$this->db->select('parent_id');
 		$this->db->from('users');
 		$this->db->where('user_id',$user_id);
-		$this->db->where('type','2');
+		//$this->db->where('type','2');
 		$query=$this->db->get();
 		$level1_id = $query->row();
-	    $level1_id= $level1_id->parent_id;
-	    // $level1_id;
+
+		if($level1_id->parent_id == '0'){
+			if($this->verify_self_parent_position($level1_id->referal_id)){
+				$level1_id = $level1_id->referal_id;
+			}else{
+				$level1_id = $this->find_tree_node($level1_id->referal_id);
+			}
+		}else{
+			$level1_id= $level1_id->parent_id;
+		}
+	    
 	    $this->db->select('*');
 		$this->db->from('users');
 		$this->db->where('referal_id',$level1_id);
