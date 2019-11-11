@@ -34,6 +34,10 @@
 
 <!-- App js -->
 <script src="<?php echo base_url('style_admin/js/app.js') ?>"></script>
+
+<script type="text/javascript" src="<?php echo base_url('assets/DataTables/datatables.min.js')?>"></script>
+
 <script src="<?php echo base_url('style_admin/js/custom.js') ?>"></script>
+
 </body>
 </html>

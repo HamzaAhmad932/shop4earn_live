@@ -6,7 +6,7 @@ class Admin_model extends CI_Model{
 	public function get_customers(){
 		$this->db->select('*');
 		$this->db->from('users');
-		$this->db->order_by("user_id", "asc");
+		$this->db->order_by("id", "desc");
 		$query=$this->db->get();
 		if($query->num_rows()){
 			return $query->result();
@@ -576,6 +576,7 @@ return array_merge($level1, $level2,$level3,$level4,$level5,$level6,$level7,$lev
 		$this->db->select('*');
         $this->db->from('pending_payments');
         $this->db->where('status=0');
+        $this->db->order_by('id', 'desc');
         $query=$this->db->get();
         if($query->num_rows()){
             return $query->result();
@@ -584,9 +585,25 @@ return array_merge($level1, $level2,$level3,$level4,$level5,$level6,$level7,$lev
         }
 	}
 	public function admin_approved_payments($id,$status){
+
 		$this->db->set('status',$status);
 		$this->db->where('id',$id);
 		$this->db->update('pending_payments'); 
+
+		$this->db->select('*');
+		$this->db->where('id', $id);
+		$this->db->from('pending_payments'); 
+		$query = $this->db->get();
+		if($query->num_rows()){
+			$result = $query->row();
+			$payout = $result->withdraw_amount;
+			$this->db->set('payout', "payout + $payout", FALSE);
+			$this->db->where('user_id', $result->user_id);
+			$this->db->where('type', '2');
+			$this->db->update('users');
+
+		}
+
 	}
 	public function get_approved_payments(){
 		$this->db->select('*');
@@ -600,19 +617,28 @@ return array_merge($level1, $level2,$level3,$level4,$level5,$level6,$level7,$lev
         }
 	}
 	public function get_orders(){
-    $this->db->select('*');
-    $this->db->from('tbl_cart_product'); 
-    $this->db->join('users', 'users.user_id=tbl_cart_product.user_id', 'left');
-    $this->db->join('products', 'products.product_code=tbl_cart_product.product_id', 'left');     
-    $query = $this->db->get(); 
-    if($query->num_rows() != 0)
-    {
-        return $query->result();
-    }
-    else
-    {
-        return false;
-    }
-}
+	    $this->db->select('*');
+	    $this->db->from('tbl_cart_product'); 
+	    $this->db->join('users', 'users.user_id=tbl_cart_product.user_id', 'left');
+	    $this->db->join('products', 'products.product_code=tbl_cart_product.product_id', 'left');     
+	    $query = $this->db->get(); 
+	    if($query->num_rows() != 0)
+	    {
+	        return $query->result();
+	    }
+	    else
+	    {
+	        return false;
+	    }
+	}
+
+	public function approvedUsers(){
+
+		$this->db->select('*');
+		$this->db->from('users');
+		$this->db->where('type', '2');
+		$query = $this->db->get();
+		return $query->num_rows();
+	}
 	 
 }

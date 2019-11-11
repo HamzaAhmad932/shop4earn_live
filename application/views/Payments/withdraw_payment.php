@@ -26,25 +26,23 @@
         <label for="example-text-input" class="col-sm-2 col-form-label">Select Method</label>
             <div class="col-sm-10">
 <select class="form-control" name="account_type" onchange="myFunction()" id="account_type_id" required>
-        <option value="">Select Withdarw Method</option>
-        <option value="1">Mobi Cash</option>
-        <option value="2">Easy Paisa</option>
-        <option value="3">UBL Omni</option>
-        <option value="4">Bank Account</option>
-        <option value="5">Hand Cash</option>                 
+        <option value="" selected>Select Withdarw Method</option>
+        <?php foreach($payment_methods as $method):?>
+          <option value="<?= $method->id;?>"><?= $method->payment_method;?></option>
+        <?php endforeach;?>                
 </select>
     </div>
     </div>  
 
     <div id="cash_id" style="display: none;">
-                                            <div class="form-group row">
-                                                <label for="example-text-input" class="col-sm-2 col-form-label">Enter Number</label>
-                                                <div class="col-sm-10">
-                                                    <input class="form-control" type="number" min="0" value="0" name="phone_number"  id="example-text-input">
-                                                </div>
-                                            </div>
-                                             
-                                        </div>                                       
+      <div class="form-group row">
+          <label for="example-text-input" class="col-sm-2 col-form-label">Enter Number</label>
+          <div class="col-sm-10">
+              <input class="form-control" type="number" name="phone_number"  id="example-text-input" placeholder="ex: 03011234567">
+          </div>
+      </div>
+       
+  </div>                                       
         <div id="bank_id" style="display: none;">
          <div class="form-group row">
         <label for="example-text-input" class="col-sm-2 col-form-label">Select Bank</label>
@@ -68,7 +66,7 @@
         <label for="example-text-input" class="col-sm-2 col-form-label">Amount</label>
               <div class="col-sm-10">
           <select class="form-control" name="withdraw_bank_amount">                            
-                 <option value="1000">1000</option>
+                 <option value="1000" selected>1000</option>
                  <option value="2000">2000</option>
                  <option value="3000">3000</option>
                  <option value="4000">4000</option>
@@ -77,6 +75,13 @@
                </div>
                </div>
             </div>
+
+            <div class="form-group row">
+          <label for="example-text-input" class="col-sm-2 col-form-label">Enter Password</label>
+          <div class="col-sm-10">
+              <input class="form-control" type="password" name="password" required>
+          </div>
+      </div>
 
                        
     <div class="form-group row">

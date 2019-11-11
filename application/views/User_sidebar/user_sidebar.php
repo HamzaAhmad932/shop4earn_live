@@ -4,7 +4,7 @@
                 <div class="topbar-left">
                     <div class="">
                         <!--<a href="index.html" class="logo text-center">Admiria</a>-->
-                        <a href="#" class="logo"><!-- <img src="https://www.easylifecard.com/resources/admin/assets/images/logo-sm.png" height="36" alt="logo"> -->Logo</a>
+                        <a href="#" class="logo"><!-- <img src="https://www.easylifecard.com/resources/admin/assets/images/logo-sm.png" height="36" alt="logo"> -->shop4earn</a>
                     </div>
                 </div>
 

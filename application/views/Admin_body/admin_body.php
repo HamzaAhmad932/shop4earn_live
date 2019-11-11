@@ -37,7 +37,7 @@
                                 <span class="mini-stat-icon bg-success"><i class="fa fa-key"></i></span>
                                 <div class="mini-stat-info text-right">
                                             <span class="counter text-success">
-                                            0
+                                            <?= $approved_users;?>
                                             </span>
                                     Total Approved Customer
                                 </div>
@@ -87,7 +87,7 @@
                                             <span class="counter text-warning">
                                                 <?php
                                                 if($base_share_amount > 0){
-                                                    echo $base_share_amount;
+                                                    echo round($base_share_amount, 2);
                                                 }
                                                 else{
                                                     echo "0";
@@ -108,7 +108,7 @@
                                             <span class="counter text-pink">
                                                <?php
                                                if($boster_share_amount > 0){
-                                                   echo $boster_share_amount;
+                                                   echo round($boster_share_amount, 2);
                                                }
                                                else{
                                                    echo "0";

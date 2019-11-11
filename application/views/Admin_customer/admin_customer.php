@@ -21,7 +21,8 @@
                                 <div class="card-block">
 
                                   <div class="table-responsive">
-  <table class="table">
+  <table class="table" id="datatable" style="width: 100%;">
+    <thead>
          <tr>
               <th>ID</th>
               <th>Full Name</th>
@@ -32,6 +33,8 @@
               <th>Action</th>
              
          </tr>
+         </thead>
+         <tbody>
           <?php $serial=0;
           if($row > 0){
             foreach($row as $r):                                     
@@ -76,7 +79,7 @@
               </tr>
 
                 <?php } ?>          
-                       
+                       </tbody>
               </table>
 </div>
 

@@ -27,6 +27,17 @@ class Users_model extends CI_Model{
         $booster_com=$query->row()->booster_com;   
         return $booster_com;
     }
+
+    public function direct_bonus($user_id){
+        $this->db->select('direct_bonus');
+        $this->db->from('users');
+        $this->db->where('user_id',$user_id);
+        $query = $this->db->get();
+        $direct_bonus=$query->row()->direct_bonus;   
+        return $direct_bonus;
+    }
+
+
 	public function member_level($user_id){
         $this->db->select('*');
         $this->db->from('users');
@@ -117,20 +128,30 @@ class Users_model extends CI_Model{
         return $get_level10_data;
     }    
     public function total_earn($user_id){
-        $this->db->select_sum('comission');
+
+        $this->db->select('*');
         $this->db->from('users');
         $this->db->where('user_id',$user_id);
-        $this->db->where('(type = 2) ');
+        $this->db->where('type', '2');
         $query = $this->db->get();
+
         $base_share_amount=$query->row()->comission;
-        $this->db->select_sum('booster_com');
+        $boster_share_amount=$query->row()->booster_com;
+        $payout = $query->row()->payout;
+
+        $total_earn = ($base_share_amount + $boster_share_amount) - $payout;
+        return $total_earn;
+    }
+
+    public function totalPayout($user_id){
+
+        $this->db->select('*');
         $this->db->from('users');
         $this->db->where('user_id',$user_id);
-        $this->db->where('(type = 2) ');
+        $this->db->where('type', '2');
         $query = $this->db->get();
-        $boster_share_amount=$query->row()->booster_com;
-        $total_earn = $base_share_amount + $boster_share_amount;
-        return $total_earn;
+
+        return $query->row()->payout;
     }
     public function chk_current_bal($user_id){
          $this->db->select_sum('comission');
@@ -150,6 +171,11 @@ class Users_model extends CI_Model{
     }
     public function insert_payment_request($data){
         $this->db->insert('pending_payments',$data);
+    }
+
+    public function getPaymentMethods(){
+
+        return $this->db->get('payment_methods')->result();
     }
     public function get_pending_payments($user_id){
         $this->db->select('*');
@@ -173,6 +199,35 @@ class Users_model extends CI_Model{
             return $query->result();
         }else{
             return false;
+        }
+    }
+
+    public function isValidUser($user_id, $password){
+
+        $this->db->select('*');
+        $this->db->from('users');
+        $this->db->where('user_id', $user_id);
+        $this->db->where('password', $password);
+        $this->db->where('type', '2');
+        $query=$this->db->get();
+
+        return $query->num_rows() ? true : false;
+    }
+
+    public function isValidAmount($user_id, $amount){
+
+        $this->db->select("*");
+        $this->db->from('users');
+        $this->db->where('user_id', $user_id);
+        $query = $this->db->get();
+
+        if($query->num_rows()){
+            $result = $query->row();
+
+            $total_amount = $result->comission + $result->booster_com;
+            $available_amount = $total_amount - $amount;
+
+            return $available_amount < 0 ? false : true;
         }
     }
 }

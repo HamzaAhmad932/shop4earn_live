@@ -20,21 +20,9 @@
                                 <div class="card-block">
 
 
-<div class="container pull-right">
-  <div class="row">
-        <div class="span12">
-            <form id="custom-search-form" class="form-search form-horizontal pull-right">
-                <div class="input-append span12">
-                    <input type="text" class="search-query" placeholder="Search">
-                    <button type="submit" class="btn"><i class="icon-search"></i></button>
-                </div>
-            </form>
-        </div>
-  </div>
-</div>
-
                                   <div class="table-responsive">
-  <table class="table">
+  <table class="table" id="datatable" style="width: 100%;">
+    <thead>
          <tr>
               <th>SR</th>
               <th>Full Name</th>
@@ -46,6 +34,8 @@
              
              
          </tr>
+         </thead>
+         <tbody>
  <?php $serial=0;
           if($row > 0){
             foreach($row as $r):                                     
@@ -80,7 +70,9 @@
                 <td></td>
               </tr>
 
-                <?php } ?>           
+                <?php } ?>   
+
+                </tbody>        
                        
   </table>
 </div>

@@ -15,6 +15,7 @@ class Admin extends CI_Controller {
             $data['total_register_member']=$this->Admin_model->total_register_member();
             $data['base_share_amount']=$this->Admin_model->base_share_amount();
             $data['boster_share_amount']=$this->Admin_model->boster_share_amount();
+            $data['approved_users'] = $this->Admin_model->approvedUsers();
             $this->load->view('Admin_header/admin_header');
             $this->load->view('Admin_sidebar/admin_sidebar');
             $this->load->view('Admin_topbar/admin_topbar',$data);
@@ -444,7 +445,8 @@ class Admin extends CI_Controller {
 			 	'qty'=>$this->input->post('qty') ,
 			 	'discount'=>$this->input->post('discount') ,
 			 	'net_amount'=>$this->input->post('net_amount') ,
-			 	'm_date'=>$m_date
+			 	'm_date'=>$m_date,
+			 	'direct_sponser_bonus'=> $this->input->post('direct_sponser_bonus')
 			 );
 		$this->Admin_model->get_product_update($data,$id);
 		redirect('Admin/Products');
