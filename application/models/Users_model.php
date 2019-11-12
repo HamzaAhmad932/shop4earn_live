@@ -139,7 +139,14 @@ class Users_model extends CI_Model{
         $boster_share_amount=$query->row()->booster_com;
         $payout = $query->row()->payout;
 
+
+        $base_share_amount = $base_share_amount == '' ? 0 : $base_share_amount;
+        $boster_share_amount = $boster_share_amount == '' ? 0 : $boster_share_amount;
+        $payout = $payout == '' ? 0 : $payout;
+
+
         $total_earn = ($base_share_amount + $boster_share_amount) - $payout;
+
         return $total_earn;
     }
 
