@@ -137,15 +137,17 @@ class Users_model extends CI_Model{
 
         $base_share_amount=$query->row()->comission;
         $boster_share_amount=$query->row()->booster_com;
+        $direct_referal_bonus = $query->row()->direct_bonus;
         $payout = $query->row()->payout;
 
 
         $base_share_amount = $base_share_amount == '' ? 0 : $base_share_amount;
         $boster_share_amount = $boster_share_amount == '' ? 0 : $boster_share_amount;
+        $direct_referal_bonus = $direct_referal_bonus == '' ? 0 : $direct_referal_bonus;
         $payout = $payout == '' ? 0 : $payout;
 
 
-        $total_earn = ($base_share_amount + $boster_share_amount) - $payout;
+        $total_earn = ($base_share_amount + $boster_share_amount + $direct_referal_bonus) - $payout;
 
         return $total_earn;
     }
