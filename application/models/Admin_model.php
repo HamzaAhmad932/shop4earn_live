@@ -161,10 +161,25 @@ class Admin_model extends CI_Model{
 				'parent_id' => $parent_id,
 			];
 			$this->db->where('user_id',$id);
-			$this->db->update('users',$data); 
+			$this->db->update('users',$data);
+
+			$this->deliverCommission($user->user_id);
 		}
 		
 
+	}
+
+	public function deliverCommission($user_id){
+
+		$this->db->select('product_id');
+        $this->db->from('tbl_cart_product');
+        $this->db->where('user_id', $user_id);
+        $result = $this->db->get()->result_array();
+        $products_id = array_column($result, 'product_id');
+
+		$upline_users=$this->Home_model->get_upline_users($user_id,$products_id);
+        $insert_boster=$this->Home_model->insert_boster($user_id,$products_id);
+        $direct_bonus = $this->Home_model->insert_direct_bonus($user_id,$products_id);
 	}
 	public function get_levels_setting(){
 		$this->db->select('*');

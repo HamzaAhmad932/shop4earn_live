@@ -10,6 +10,18 @@ class Home extends CI_Controller {
         $this->load->model('Admin_model');
         $this->load->helper('dump');
     }
+
+    public function playground(){
+        $user_id = 129;
+        $this->db->select('product_id');
+        $this->db->from('tbl_cart_product');
+        $this->db->where('user_id', $user_id);
+        $result = $this->db->get()->result_array();
+    
+        var_dump(array_column($result, 'product_id'));
+        die();
+        return;
+    }
     
     public function basic_test($user_id, $product_id){
         // $this->Home_model->get_upline_users(11, 1212);
@@ -323,6 +335,21 @@ class Home extends CI_Controller {
 
         redirect('/index.php/Order/Confirm_order');
     }
+
+    public function referal_check($str)
+    {
+        $invalid_referals = ['0', '1', '2', '3', '4'];
+        if (in_array($str, $invalid_referals))
+        {
+            $this->form_validation->set_message('referal_check', 'Sponser No. can not be 0, 1, 2, 3, 4. Leave empty if there is no sponser.');
+            return FALSE;
+        }
+        else
+        {
+            return TRUE;
+        }
+    }
+
         public function register_validate(){
 
         $this->form_validation->set_rules('full_name', 'Username', 'required');
@@ -333,6 +360,7 @@ class Home extends CI_Controller {
         // $this->form_validation->set_rules('provience', 'City', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
         $this->form_validation->set_rules('cpassword', 'Confirm Password', 'required|matches[password]');
+        $this->form_validation->set_rules('referal_id', 'Sponser ID', 'callback_referal_check');
 
         if($this->form_validation->run() == FALSE)
         {
@@ -340,14 +368,22 @@ class Home extends CI_Controller {
         
         }else{
 
+            
+
+            $referal_id = $this->input->post('referal_id');
+            
+            var_dump($referal_id);
+            die();
+            return;
+
         $email = !empty($this->input->post('email')) ? $this->input->post('email') : '';
         $user_id = $this->Home_model->get_user_id();
 
         $user_id = $user_id + 1;
         
-        $referal_id = empty($this->input->post('referal_id')) ? 
+        $referal_id = empty($referal_id) ? 
                         $this->Home_model->get_default_parent_id() : 
-                        $this->input->post('referal_id');
+                        $referal_id;
 
 
         $data = [
@@ -492,13 +528,13 @@ class Home extends CI_Controller {
             $products_id = [];
 
             $total_cart=$this->cart->total_items();
-            $data=array(
+            $data = [
                 'userid' =>$user_id ,
                 'created_date'=>$c_date,
                 'total_cart'=>$total_cart
-            );
+            ];
             $this->Home_model->insertcart($data);
-            $insert_id=$this->db->insert_id(); //this will return tbl_cart id
+            $insert_id = $this->db->insert_id(); //this will return tbl_cart id
 
             foreach ($this->cart->contents() as $items){
                 
@@ -511,14 +547,8 @@ class Home extends CI_Controller {
                 
                 array_push($products_id, $items['id']);
             }
-
-            $upline_users=$this->Home_model->get_upline_users($user_id,$products_id);
-            $insert_boster=$this->Home_model->insert_boster($user_id,$products_id);
-            $direct_bonus = $this->Home_model->insert_direct_bonus($user_id,$products_id);
             $this->cart->destroy();
         }
-
-        // $this->thankYou();
 
         redirect('index.php/Home/thankYou');
     }

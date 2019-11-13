@@ -13,17 +13,17 @@
   			<div class="row h-100 justify-content-center align-items-center">
 				<div class="col-lg-9 order-lg-last dashboard-content">
 					<h2>Registration</h2>
-
-					<p style="color: red;"><?php echo validation_errors(); ?></p>
+					<div style="color: red"><?php echo validation_errors(); ?></div>
 					<form action="<?= base_url()."index.php/Home/register_validate" ?>" method="post">
 						<div class="row">
 							<div class="col-sm-12">
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group required-field">
-											<label for="acc-name">Sponser ID</label>
+											<label for="acc-name">Sponser No.</label>
 											<input type="text" class="form-control" id="referal_id" name="referal_id" value="<?php echo set_value('referal_id'); ?>"  >
 										</div><!-- End .form-group -->
+										<div style="color: red"><?php echo form_error('referal_check'); ?></div>
 									</div><!-- End .col-md-4 -->
 
 									<div class="col-md-6">
@@ -31,6 +31,7 @@
 											<label for="acc-mname">User Name</label>
 											<input type="text" class="form-control" id="full_name" name="full_name" value="<?php echo set_value('full_name'); ?>"  >
 										</div><!-- End .form-group -->
+										<div style="color: red"><?php echo form_error('full_name'); ?></div>
 									</div><!-- End .col-md-4 -->
 								</div><!-- End .row -->
 							</div><!-- End .col-sm-11 -->
@@ -54,14 +55,16 @@
 						<div class="col-md-6">
 							<div class="form-group required-field">
 								<label for="acc-lastname">City</label>
-								<input type="text" class="form-control" id="city" name="city" required>
+								<input type="text" class="form-control" id="city" name="city" value="<?php echo set_value('city'); ?>"required>
 							</div><!-- End .form-group -->
+							<div style="color: red"><?php echo form_error('city'); ?></div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="form-group required-field">
 								<label for="acc-lastname">Mobile</label>
 								<input type="text" class="form-control" id="mobile" name="mobile" value="<?php echo set_value('mobile'); ?>" required>
+								<div style="color: red"><?php echo form_error('mobile'); ?></div>
 							</div><!-- End .form-group -->
 						</div>
 
@@ -77,6 +80,7 @@
 								<div class="form-group required-field">
 									<label for="acc-lastname">Create Password</label>
 									<input type="password" class="form-control" id="password" name="password" required>
+									<div style="color: red"><?php echo form_error('password'); ?></div>
 								</div><!-- End .form-group -->
 							</div>
 							<div class="col-md-6">

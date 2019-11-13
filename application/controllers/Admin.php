@@ -6,6 +6,7 @@ class Admin extends CI_Controller {
 
 		parent::__Construct();
 		$this->load->model('Admin_model');
+		$this->load->model('Home_model');
 	}
 	public function index(){
 		if(isset($this->session->userdata['logged_in'])) {
@@ -731,7 +732,7 @@ class Admin extends CI_Controller {
 			$sess_data=$this->session->userdata('logged_in');
 			$data['full_name']=$sess_data;
 			$admin_id = $sess_data['id'];
-			$data['user']=$this->Admin_model->get_user_detail($id);
+			// $data['user']=$this->Admin_model->get_user_detail($admin_id);
 			$this->load->view('Admin_header/admin_header');
 			$this->load->view('Admin_sidebar/admin_sidebar');
 			$this->load->view('Admin_topbar/admin_topbar',$data);

@@ -1711,26 +1711,25 @@ public function update_users_for_basic_comission($user_id, $comission){
 	
 	
 	public function insertcart($data){
-				$this->db->insert('tbl_cart',$data);
-        }
+		$this->db->insert('tbl_cart',$data);
+    }
     public function insertcartproductdetail($insert_id,$pid,$price,$qty,$user_id,$ip){
-                                //pay PV to direct reffernce ID
-                                $PV_for_DRF = $this->db->get_where('products',array('product_code'=>$pid))->result_array();
-                                //$PV_for_DRF[0]['basic_vol'];//PV of product
-                                //$PV_for_DRF[0]['booster_vol'];//BV of product
-                                //DirectRefferID
+		
+		$this->db->select("*");
+		$this->db->from('products');
+		$this->db->where('id', $pid);
+		$PV_for_DRF = $this->db->get()->row();
 
-                                //add to checkout
-                                $this->db->set('product_cart_id',$insert_id);
-                                $this->db->set('product_id',$pid);
-                                $this->db->set('product_price',$price);
-                                $this->db->set('quantity',$qty);
-                                // $this->db->set('pv',$PV_for_DRF[0]['basic_vol']);
-                                $this->db->set('pv', 0);
-                                // $this->db->set('bv',$PV_for_DRF[0]['booster_vol']);
-                                $this->db->set('bv',0);
-                                $this->db->set('user_id',$user_id);
-                                $this->db->set('ip',$ip);
-                                $this->db->insert('tbl_cart_product');
-        }
+	    $this->db->set('product_cart_id',$insert_id);
+	    $this->db->set('product_id',$pid);
+	    $this->db->set('product_price',$price);
+	    $this->db->set('quantity',$qty);
+	    $this->db->set('pv',$PV_for_DRF->basic_vol);
+	    // $this->db->set('pv', 0);
+	    $this->db->set('bv',$PV_for_DRF->booster_vol);
+	    // $this->db->set('bv',0);
+	    $this->db->set('user_id',$user_id);
+	    $this->db->set('ip',$ip);
+	    $this->db->insert('tbl_cart_product');
+    }
 }
