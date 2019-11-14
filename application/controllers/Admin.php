@@ -736,7 +736,7 @@ class Admin extends CI_Controller {
 			$this->load->view('Admin_header/admin_header');
 			$this->load->view('Admin_sidebar/admin_sidebar');
 			$this->load->view('Admin_topbar/admin_topbar',$data);
-			// $this->load->view('User_body/edit_user',$data);
+			$this->load->view('v2/components/slider/slider',$data);
 			$this->load->view('Admin_footer/admin_footer');
 
 		}
@@ -745,6 +745,25 @@ class Admin extends CI_Controller {
 			redirect('Home/Login1');
 		}
 
+	}
+
+	public function addSliderImage(){
+
+		$config['upload_path']='./v2/assets/images/products/';
+        $config['allowed_types']='gif|jpg|png';
+        $config['max_size']='1800';
+        $config['max_width']='4024';
+        $config['max_height']='3468'; 
+        
+        $target_file1 = '';
+        
+        if(!empty($_FILES["slider_image"]["name"])){
+            
+            $target_file1 = $config['upload_path'].basename($_FILES["slider_image"]["name"]);
+            $this->load->library('upload',$config);
+    	    $this->upload->do_upload('slider_image');
+    	    $data1=$this->upload->data();
+        }
 	}
 
 }

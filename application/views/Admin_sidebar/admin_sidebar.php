@@ -65,7 +65,12 @@
                                 <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-envelope"></i><span>Slider<span class="pull-right"><i class="fa fa-angle-right"></i></span> </span></a>
                                 <ul class="list-unstyled" style="display: none;">
                                     <!-- <li><a href="<?php echo site_url('Admin/pending_rewards'); ?>">All Slider</a></li> -->
-                                    <li><a href="<?php echo site_url('Admin/addSlider'); ?>">Add Slider</a></li>
+                                    <li>
+                                        <a href="<?php echo site_url('Admin/addSlider'); ?>"> Add Image</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo site_url('Admin/addSlider'); ?>">All Images</a>
+                                    </li>
                                 </ul>
                             </li>
 

@@ -372,9 +372,6 @@ class Home extends CI_Controller {
 
             $referal_id = $this->input->post('referal_id');
             
-            var_dump($referal_id);
-            die();
-            return;
 
         $email = !empty($this->input->post('email')) ? $this->input->post('email') : '';
         $user_id = $this->Home_model->get_user_id();
