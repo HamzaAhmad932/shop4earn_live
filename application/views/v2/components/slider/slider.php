@@ -15,10 +15,10 @@
                             			<label>Upload Image:</label>
                             			<input 
                             				type="file" 
-                            				name="image" 
+                            				name="slider_image" 
                             				class="form-control"
                             			>
-                            			<div style="color: red"><?php echo form_error('full_name'); ?></div>
+                            			<div style="color: red"><?php echo form_error('slider_image'); ?></div>
                             		</div>
                             		<div>
                             			<button class="btn btn-primary" type="submit">Save</button>

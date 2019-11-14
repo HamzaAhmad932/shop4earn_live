@@ -762,7 +762,11 @@ class Admin extends CI_Controller {
             $target_file1 = $config['upload_path'].basename($_FILES["slider_image"]["name"]);
             $this->load->library('upload',$config);
     	    $this->upload->do_upload('slider_image');
-    	    $data1=$this->upload->data();
+    	    $data1 = $this->upload->data();
+
+    	    $data = [
+    	    	
+    	    ];
         }
 	}
 
