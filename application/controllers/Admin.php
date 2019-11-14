@@ -746,10 +746,31 @@ class Admin extends CI_Controller {
 		}
 
 	}
+	public function sliders(){
+
+		if(isset($this->session->userdata['logged_in'])) {
+
+			$sess_data=$this->session->userdata('logged_in');
+			$data['full_name']=$sess_data;
+			$admin_id = $sess_data['id'];
+			// $data['user']=$this->Admin_model->get_user_detail($admin_id);
+			$this->load->view('Admin_header/admin_header');
+			$this->load->view('Admin_sidebar/admin_sidebar');
+			$this->load->view('Admin_topbar/admin_topbar',$data);
+			// $this->load->view('v2/components/slider/slider',$data);
+			$this->load->view('Admin_footer/admin_footer');
+
+		}
+		else{
+
+			redirect('Home/Login1');
+		}
+
+	}
 
 	public function addSliderImage(){
 
-		$config['upload_path']='./v2/assets/images/products/';
+		$config['upload_path']='./v2/assets/images/slider/';
         $config['allowed_types']='gif|jpg|png';
         $config['max_size']='1800';
         $config['max_width']='4024';
@@ -765,8 +786,16 @@ class Admin extends CI_Controller {
     	    $data1 = $this->upload->data();
 
     	    $data = [
-    	    	
+    	    	'img_name'=> $data1['file_name'],
+    	    	'img_path'=> $target_file1,
+    	    	'img_desc'=> $this->input->post('desc')	
     	    ];
+
+    	    if($this->Admin_model->insertSlider($data)){
+    	    	redirect('Admin/addSlider');
+    	    }else{
+    	    	redirect('Admin/sliders');
+    	    }
         }
 	}
 

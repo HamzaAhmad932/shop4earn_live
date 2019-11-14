@@ -20,6 +20,15 @@
                             			>
                             			<div style="color: red"><?php echo form_error('slider_image'); ?></div>
                             		</div>
+                                    <div class="form-group">
+                                        <label>Heading Description:</label>
+                                        <input 
+                                            type="text" 
+                                            name="desc" 
+                                            class="form-control"
+                                        >
+                                        <div style="color: red"><?php echo form_error('desc'); ?></div>
+                                    </div>
                             		<div>
                             			<button class="btn btn-primary" type="submit">Save</button>
                             		</div>

@@ -85,6 +85,12 @@ if($host=='localhost:8080' or $host=='localhost')
 	$_db = 'shop4ear_mlm_ci';
 }
 
+if($host == 'http://test.shop4earn.com' or $host == 'test.shop4earn.com'){
+	$user = 'shop4ear_mlm_ci';
+	$pass = '#,@c@mEZpx_6';
+	$_db = 'shop4ear_mlm_test';
+}
+
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',

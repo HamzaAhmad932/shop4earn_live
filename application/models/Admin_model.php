@@ -492,6 +492,9 @@ return array_merge($level1, $level2,$level3,$level4,$level5,$level6,$level7,$lev
 	public function insert_product($data){
 		$this->db->insert('products',$data);
 	}
+	public function insertSlider($data){
+		$this->db->insert('slider',$data);
+	}
 	public function get_product_data(){
 		$this->db->select('*');
 		$this->db->from('products');
