@@ -28,11 +28,8 @@
               <th>Full Name</th>
               <th>Amount</th>
               <th>Method</th>
-              <th>Account</th>
               <th>Date Time</th>
                <th>Status</th>
-             
-             
          </tr>
          </thead>
          <tbody>
@@ -46,7 +43,6 @@
                 <td><?php echo $r->full_name; ?></td>
                 <td><?php echo $r->withdraw_amount; ?></td>
                 <td><?php echo $r->account_type; ?></td>
-                <td><?php echo $r->selected_bank; ?></td>
                 <td><?php echo $r->date_time; ?></td>
                 <td>
                   <?php 
