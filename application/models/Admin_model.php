@@ -493,7 +493,7 @@ return array_merge($level1, $level2,$level3,$level4,$level5,$level6,$level7,$lev
 		$this->db->insert('products',$data);
 	}
 	public function insertSlider($data){
-		$this->db->insert('slider',$data);
+		return $this->db->insert('slider',$data);
 	}
 	public function get_product_data(){
 		$this->db->select('*');
@@ -657,6 +657,21 @@ return array_merge($level1, $level2,$level3,$level4,$level5,$level6,$level7,$lev
 		$this->db->where('type', '2');
 		$query = $this->db->get();
 		return $query->num_rows();
+	}
+
+	public function getSliderImages(){
+
+		$this->db->select('*');
+		$this->db->from('slider');
+		$query = $this->db->get();
+
+		return $query->num_rows() > 0 ? $query->result() : false;
+	}
+
+	public function deleteSliderImage($id){
+
+		$this->db->where('id', $id);
+		$this->db->delete('slider');
 	}
 	 
 }

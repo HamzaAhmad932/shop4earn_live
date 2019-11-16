@@ -725,7 +725,7 @@ class Admin extends CI_Controller {
 
 	}
 
-	public function addSlider(){
+	public function addSliderImage(){
 
 		if(isset($this->session->userdata['logged_in'])) {
 
@@ -753,11 +753,11 @@ class Admin extends CI_Controller {
 			$sess_data=$this->session->userdata('logged_in');
 			$data['full_name']=$sess_data;
 			$admin_id = $sess_data['id'];
-			// $data['user']=$this->Admin_model->get_user_detail($admin_id);
+			$data['images']=$this->Admin_model->getSliderImages();
 			$this->load->view('Admin_header/admin_header');
 			$this->load->view('Admin_sidebar/admin_sidebar');
 			$this->load->view('Admin_topbar/admin_topbar',$data);
-			// $this->load->view('v2/components/slider/slider',$data);
+			$this->load->view('v2/components/slider/sliders',$data);
 			$this->load->view('Admin_footer/admin_footer');
 
 		}
@@ -768,7 +768,7 @@ class Admin extends CI_Controller {
 
 	}
 
-	public function addSliderImage(){
+	public function storeSliderImage(){
 
 		$config['upload_path']='./v2/assets/images/slider/';
         $config['allowed_types']='gif|jpg|png';
@@ -777,26 +777,48 @@ class Admin extends CI_Controller {
         $config['max_height']='3468'; 
         
         $target_file1 = '';
+        $trimed_name = str_replace(" ", "_", $_FILES["image"]["name"]);
+
         
-        if(!empty($_FILES["slider_image"]["name"])){
-            
-            $target_file1 = $config['upload_path'].basename($_FILES["slider_image"]["name"]);
+        if(!empty($_FILES["image"]["name"])){
+
+            $target_file1 = $config['upload_path'].basename($trimed_name);
+
             $this->load->library('upload',$config);
-    	    $this->upload->do_upload('slider_image');
-    	    $data1 = $this->upload->data();
+    	    // $this->upload->do_upload('image');
+    	    // $data1 = $this->upload->data();
 
-    	    $data = [
-    	    	'img_name'=> $data1['file_name'],
-    	    	'img_path'=> $target_file1,
-    	    	'img_desc'=> $this->input->post('desc')	
-    	    ];
+    	    if ( ! $this->upload->do_upload('image'))
+	        {
+	            $error = array('error' => $this->upload->display_errors());
 
-    	    if($this->Admin_model->insertSlider($data)){
-    	    	redirect('Admin/addSlider');
-    	    }else{
-    	    	redirect('Admin/sliders');
-    	    }
+	            print_r($error); //debug it here 
+
+	        }
+	        else
+	        {
+	            $data1 = $this->upload->data();
+
+	            $data = [
+			    	'img_name'=> $data1['file_name'],
+			    	'img_path'=> $target_file1,
+			    	'img_desc'=> $this->input->post('desc')	
+			    ];
+
+			    if($this->Admin_model->insertSlider($data)){
+			    	redirect('Admin/sliders');
+			    }
+	        }
         }
+
+        // redirect('Admin/sliders');
+	}
+
+	public function deleteSliderImage($id){
+
+		$this->Admin_model->deleteSliderImage($id);
+
+		redirect('Admin/sliders');
 	}
 
 }

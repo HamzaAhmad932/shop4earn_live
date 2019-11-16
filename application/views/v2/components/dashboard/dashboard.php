@@ -9,12 +9,13 @@
                                 <div class="slide-border-top">
                                     <img src="<?php echo base_url($slider->img_path)?>" alt="Border" width="290" height="38">
                                 </div><!-- End .slide-border-top -->
-                                <h3>80% off for select items</h3>
-                                <h1>fashion mega sale</h1>
-                                <a href="category.html" class="btn btn-primary">Shop Now</a>
-                                <div class="slide-border-bottom">
+                                <h1><?php echo $slider->img_desc;?></h1>
+                                <!-- <h3></h3> -->
+                                <!-- <a href="category.html" class="btn btn-primary">Shop Now</a> -->
+                                <!-- <div class="slide-border-bottom">
                                     <img src="<?php echo base_url($slider->img_path)?>" alt="Border" width="290" height="111">
-                                </div><!-- End .slide-border-bottom -->
+                                </div> -->
+                                <!-- End .slide-border-bottom -->
                             </div><!-- End .home-slide-content -->
                         </div><!-- End .container -->
                     </div><!-- End .home-slide -->

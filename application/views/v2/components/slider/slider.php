@@ -9,13 +9,19 @@
                    		<h3>Add Image</h3>
                         <div class="card m-b-20">
                             <div class="card-block">
-                            	<form method="POST" action="<?= base_url().'index.php/Admin/addSliderImage' ?>">
-                            		<input name="redirect" type="hidden" value="<?= $this->uri->uri_string() ?>" />
+                            	<form 
+                                    method="post" 
+                                    action="<?= base_url().'index.php/Admin/storeSliderImage' ?>"
+                                    enctype="multipart/form-data"
+                                    >
+
+                            		<input name="redirect" type="hidden" value="<?= $this->uri->uri_string() ?>"
+                                     />
                             		<div class="form-group">
                             			<label>Upload Image:</label>
                             			<input 
                             				type="file" 
-                            				name="slider_image" 
+                            				name="image" 
                             				class="form-control"
                             			>
                             			<div style="color: red"><?php echo form_error('slider_image'); ?></div>
@@ -30,7 +36,7 @@
                                         <div style="color: red"><?php echo form_error('desc'); ?></div>
                                     </div>
                             		<div>
-                            			<button class="btn btn-primary" type="submit">Save</button>
+                                        <input type="submit" class="btn btn-primary" value="Submit">
                             		</div>
                             	</form>
                             </div>

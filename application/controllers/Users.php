@@ -5,6 +5,7 @@ class Users extends CI_Controller {
 	public function __Construct(){
 		parent::__Construct();
 		$this->load->model('Users_model');
+		$this->load->model('Admin_model');
 	}
 	public function index(){	 
 		if(isset($this->session->userdata['logged_in'])) {
@@ -21,6 +22,7 @@ class Users extends CI_Controller {
 		$data['total_earn']=$this->Users_model->total_earn($user_id);
 		$data['payout'] = $this->Users_model->totalPayout($user_id);
 		$member_level=$this->Users_model->member_level($user_id);
+		$data['downline'] = count($this->Admin_model->get_downline_data($user_id));
 		//print_r($member_level);die();
 		$get_level1_data=$this->Users_model->get_level1_data();
 		$get_level2_data=$this->Users_model->get_level2_data();
