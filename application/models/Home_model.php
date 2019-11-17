@@ -1713,20 +1713,20 @@ public function update_users_for_basic_comission($user_id, $comission){
 	public function insertcart($data){
 		$this->db->insert('tbl_cart',$data);
     }
-    public function insertcartproductdetail($insert_id,$pid,$price,$qty,$user_id,$ip){
+    public function insertcartproductdetail($insert_id,$pid,$qty,$user_id,$ip){
 		
 		$this->db->select("*");
 		$this->db->from('products');
 		$this->db->where('id', $pid);
-		$PV_for_DRF = $this->db->get()->row();
+		$product = $this->db->get()->row();
 
 	    $this->db->set('product_cart_id',$insert_id);
 	    $this->db->set('product_id',$pid);
-	    $this->db->set('product_price',$price);
+	    $this->db->set('product_price',$product->product_price);
 	    $this->db->set('quantity',$qty);
-	    $this->db->set('pv',$PV_for_DRF->basic_vol);
+	    $this->db->set('pv',$product->basic_vol);
 	    // $this->db->set('pv', 0);
-	    $this->db->set('bv',$PV_for_DRF->booster_vol);
+	    $this->db->set('bv',$product->booster_vol);
 	    // $this->db->set('bv',0);
 	    $this->db->set('user_id',$user_id);
 	    $this->db->set('ip',$ip);

@@ -37,6 +37,7 @@
                                 <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-envelope"></i><span>Customer<span class="pull-right"><i class="fa fa-angle-right"></i></span> </span></a>
                                 <ul class="list-unstyled" style="display: none;">
                                     <li><a href="<?php echo site_url('Admin/customer_list'); ?>">Customer List</a></li>
+                                    <li><a href="<?php echo site_url('Admin/register_customer'); ?>">Register Customer</a></li>
                                 </ul>
                             </li>
                             <li class="has_sub">

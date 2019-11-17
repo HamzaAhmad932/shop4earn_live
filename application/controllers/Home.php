@@ -341,7 +341,7 @@ class Home extends CI_Controller {
         $invalid_referals = ['0', '1', '2', '3', '4'];
         if (in_array($str, $invalid_referals))
         {
-            $this->form_validation->set_message('referal_check', 'Sponser No. can not be 0, 1, 2, 3, 4. Leave empty if there is no sponser.');
+            $this->form_validation->set_message('referal_check', 'Please give original Sponser ID or Leave empty if there is no sponser.');
             return FALSE;
         }
         else
@@ -384,15 +384,15 @@ class Home extends CI_Controller {
 
 
         $data = [
-                    'user_id'   => $user_id,
-                    'parent_id' => 0,
-                    'full_name' => $this->input->post('full_name'),
-                    'mobile'    => $this->input->post('mobile'),
-                    'email'     => $email,
-                    'password'  => $this->input->post('password'),
-                    'referal_id'=> $referal_id,
-                    'type'      => '0',
-                ];
+                'user_id'   => $user_id,
+                'parent_id' => 0,
+                'full_name' => $this->input->post('full_name'),
+                'mobile'    => $this->input->post('mobile'),
+                'email'     => $email,
+                'password'  => $this->input->post('password'),
+                'referal_id'=> $referal_id,
+                'type'      => '0',
+            ];
 
         //Type: 1 => admin, 2 => customer, 0 => deactive customer
 
@@ -522,7 +522,6 @@ class Home extends CI_Controller {
         {
             $total = 0;
             $qu=0;
-            $products_id = [];
 
             $total_cart=$this->cart->total_items();
             $data = [
@@ -540,9 +539,8 @@ class Home extends CI_Controller {
                 $qu = $qu + $items['qty'];
                 $this
                     ->Home_model
-                    ->insertcartproductdetail($insert_id,$items['id'],$items['price'],$items['qty'],$user_id,$ip);
+                    ->insertcartproductdetail($insert_id,$items['id'],$items['qty'],$user_id,$ip);
                 
-                array_push($products_id, $items['id']);
             }
             $this->cart->destroy();
         }

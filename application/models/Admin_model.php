@@ -139,6 +139,15 @@ class Admin_model extends CI_Model{
         	return false;
         }
 	}
+
+	public function get_tree_node_from_referral($referral_id){
+
+		if($this->verify_self_parent_position($referral_id)){
+			return $referral_id;
+		}else{
+			return $this->find_tree_node($referral_id);
+		}
+	}
 	public function approve_users($id){
 
 		$this->db->where('user_id', $id);

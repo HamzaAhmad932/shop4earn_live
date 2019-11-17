@@ -46,5 +46,7 @@ function myFunction() {
 
 
 $(document).ready(function() {
-    $('#datatable').DataTable();
+    $('#datatable').DataTable({
+    	"order": []
+    });
 } );

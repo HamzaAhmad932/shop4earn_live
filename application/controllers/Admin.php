@@ -8,6 +8,12 @@ class Admin extends CI_Controller {
 		$this->load->model('Admin_model');
 		$this->load->model('Home_model');
 	}
+
+	public function test_sales(){
+
+
+	}
+
 	public function index(){
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
@@ -47,6 +53,7 @@ class Admin extends CI_Controller {
 		$data['full_name']=$sess_data;
 		$admin_id = $sess_data['id'];
 		$data['row']=$this->Admin_model->get_customers();
+
 		$this->load->view('Admin_header/admin_header');
 		$this->load->view('Admin_sidebar/admin_sidebar');
 		$this->load->view('Admin_topbar/admin_topbar',$data);
@@ -819,6 +826,122 @@ class Admin extends CI_Controller {
 		$this->Admin_model->deleteSliderImage($id);
 
 		redirect('Admin/sliders');
+	}
+
+	public function register_customer(){
+
+		if(isset($this->session->userdata['logged_in'])) {
+			$sess_data=$this->session->userdata('logged_in');
+            $data['full_name']=$sess_data;
+            $data['user_id']=$this->Home_model->get_user_id();
+            $data['products'] = $this->Home_model->get_products_data();
+            
+            $this->load->view('Admin_header/admin_header');
+            $this->load->view('Admin_sidebar/admin_sidebar');
+            $this->load->view('Admin_topbar/admin_topbar',$data);
+            $this->load->view('Register/register_customer',$data);
+            $this->load->view('Admin_footer/admin_footer');
+		}
+		else{
+
+		    redirect('Home/Login1');
+		}
+	}
+
+	public function referal_check($str)
+    {
+        $invalid_referals = ['0', '1', '2', '3', '4'];
+        if (in_array($str, $invalid_referals))
+        {
+            $this->form_validation->set_message('referal_check', 'Please give original Sponser ID or Leave empty if there is no sponser.');
+            return FALSE;
+        }
+        else
+        {
+            return TRUE;
+        }
+    }
+
+	public function register_customer_validate(){
+
+		$this->form_validation->set_rules('full_name', 'Username', 'required');
+        // $this->form_validation->set_rules('email', 'Email', 'required');
+        $this->form_validation->set_rules('city', 'City', 'required');
+
+        $this->form_validation->set_rules('mobile', 'Email', 'required');
+        // $this->form_validation->set_rules('provience', 'City', 'required');
+        $this->form_validation->set_rules('password', 'Password', 'required');
+        $this->form_validation->set_rules('cpassword', 'Confirm Password', 'required|matches[password]');
+        $this->form_validation->set_rules('referal_id', 'Sponser ID', 'callback_referal_check');
+
+        // $this->form_validation->set_rules('is_active', 'Activation status', 'required');
+
+        $this->form_validation->set_rules('product_id', 'Product', 'required');
+
+        if($this->form_validation->run() == FALSE)
+        {
+            $this->register_customer();
+        
+        }else{
+            
+
+            $referal_id = $this->input->post('referal_id');
+            
+
+	        $email = !empty($this->input->post('email')) ? $this->input->post('email') : '';
+	        $user_id = $this->Home_model->get_user_id();
+
+	        $user_id = $user_id + 1;
+	        
+	        $referal_id = empty($referal_id) ? 
+	                        $this->Home_model->get_default_parent_id() : 
+	                        $referal_id;
+	        $status = !empty($this->input->post('is_active'));
+
+	        $product_id = $this->input->post('product_id');
+	        $qty = $this->input->post('qty');
+	        $ip = $_SERVER['REMOTE_ADDR'];
+	        $parent_id = 0;
+
+	        if($status){
+
+	        	$parent_id = $this->Admin_model->get_tree_node_from_referral($referal_id);
+	        }
+
+
+	        $data = [
+	                'user_id'   => $user_id,
+	                'parent_id' => $parent_id,
+	                'full_name' => $this->input->post('full_name'),
+	                'mobile'    => $this->input->post('mobile'),
+	                'email'     => $email,
+	                'password'  => $this->input->post('password'),
+	                'referal_id'=> $referal_id,
+	                'type'      => $status == TRUE ? '2' : '0',
+	            ];
+
+	        //Type: 1 => admin, 2 => customer, 0 => deactive customer
+
+	        $this->Home_model->insertData($data);
+
+	        $data = [
+                'userid'		=> $user_id ,
+                'created_date'	=> date('Y-m-d'),
+                'total_cart'	=> 1
+            ];
+            $this->Home_model->insertcart($data);
+            $insert_id = $this->db->insert_id();
+
+	        $this
+                ->Home_model
+                ->insertcartproductdetail($insert_id,$product_id,$qty,$user_id,$ip);
+
+	        if($status){
+	        	$this->Admin_model->deliverCommission($user_id);
+	        }
+
+	        redirect('Admin/register_customer');
+		}
 	}
 
 }

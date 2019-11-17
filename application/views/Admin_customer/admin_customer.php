@@ -40,7 +40,7 @@
             foreach($row as $r):                                     
                                     $serial++;
                                         ?>
-            <tr>
+            <tr <?php if($r->type == '0'){ echo ('style="background: #ddd;"');}?>>
                 <td><?php echo $r->user_id; ?></td>
                 <td><?php echo $r->full_name; ?></td>
                 <td><?php echo $r->mobile; ?></td>
