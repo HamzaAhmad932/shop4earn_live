@@ -107,7 +107,7 @@
                                     <select class="form-control" name="product_id" required>
                                         <option value="" selected>Select product</option>
                                         <?php foreach($products as $product):?>
-                                            <option value="<?= $product->id;?>"><?= '('.$product->product_code.') '.$product->product_name;?></option>
+                                            <option value="<?= $product->id;?>"><?= '('.$product->product_code.') '.$product->product_name.' (Rs. '.$product->product_price.')';?></option>
                                         <?php endforeach;?>
                                     </select>
                                 </div><!-- End .form-group -->
