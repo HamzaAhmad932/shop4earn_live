@@ -132,7 +132,7 @@ class Users_model extends CI_Model{
         $this->db->select('*');
         $this->db->from('users');
         $this->db->where('user_id',$user_id);
-        $this->db->where('type', '2');
+        // $this->db->where('type', '2');
         $query = $this->db->get();
 
         $base_share_amount=$query->row()->comission;
@@ -157,7 +157,7 @@ class Users_model extends CI_Model{
         $this->db->select('*');
         $this->db->from('users');
         $this->db->where('user_id',$user_id);
-        $this->db->where('type', '2');
+        // $this->db->where('type', '2');
         $query = $this->db->get();
 
         return $query->row()->payout;

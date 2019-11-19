@@ -569,25 +569,31 @@ class Home extends CI_Controller {
         $this->load->view('v2/layout/footer');
 
     }
-        public function login_validate(){
+
+    public function login_validate(){
+
         $username=$this->input->post('username');
         $password=$this->input->post('password');
         $result=$this->Home_model->login($username,$password);
 
+        // var_dump($result);
+        // die();
+        // return;
+
          //print_r($result->mobile); die();
         if($result){
-                       $sess_array = array(
-                        'id'   =>$result->id,
-                        'user_id' => $result->user_id,
-                        'full_name'=>$result->full_name,
-                        'username'=>$result->username,
-                        'mobile'  => $result->mobile,
-                        'email'   => $result->email,
-                        'password'=> $result->password,
-                        'loggedin'=> TRUE
-                       );
+               $sess_array = array(
+                'id'   =>$result->id,
+                'user_id' => $result->user_id,
+                'full_name'=>$result->full_name,
+                'username'=>$result->username,
+                'mobile'  => $result->mobile,
+                'email'   => $result->email,
+                'password'=> $result->password,
+                'loggedin'=> TRUE
+               );
 
-                      $this->session->set_userdata('logged_in', $sess_array);
+            $this->session->set_userdata('logged_in', $sess_array);
 
             if($result->type==1){
                 $data['username,email']=$sess_array;
@@ -595,7 +601,7 @@ class Home extends CI_Controller {
                  redirect ('index.php/Admin',$data);
             }
 
-            elseif($result->type==2){
+            elseif($result->type==2 || $result->type==0){
                 $data['username,full_name,email,user_id,mobile,cnic,city,password']=$sess_array;
 
                  //redirect ('Users',$data);
