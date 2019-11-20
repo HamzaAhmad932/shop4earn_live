@@ -115,7 +115,7 @@
                             <div class="col-md-6">
                                 <div class="form-group required-field">
                                     <label for="acc-lastname">Quantity</label>
-                                    <input type="number" name="qty" class="form-control" value="1" required>
+                                    <input type="number" name="qty[]" class="form-control" value="1" required>
                                 </div><!-- End .form-group -->
                             </div>
                         </div>
@@ -135,7 +135,7 @@
                             <div class="col-md-6">
                                 <div class="form-group required-field">
                                     <!-- <label for="acc-lastname">Quantity</label> -->
-                                    <input type="number" name="qty" class="form-control" value="1" required>
+                                    <input type="number" name="qty[]" class="form-control" value="1" required>
                                 </div><!-- End .form-group -->
                             </div>
                         </div>
@@ -155,7 +155,7 @@
                             <div class="col-md-6">
                                 <div class="form-group required-field">
                                     <!-- <label for="acc-lastname">Quantity</label> -->
-                                    <input type="number" name="qty" class="form-control" value="1" required>
+                                    <input type="number" name="qty[]" class="form-control" value="1" required>
                                 </div><!-- End .form-group -->
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                             <div class="col-md-6">
                                 <div class="form-group required-field">
                                     <!-- <label for="acc-lastname">Quantity</label> -->
-                                    <input type="number" name="qty" class="form-control" value="1" required>
+                                    <input type="number" name="qty[]" class="form-control" value="1" required>
                                 </div><!-- End .form-group -->
                             </div>
                         </div>

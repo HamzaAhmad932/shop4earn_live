@@ -900,7 +900,8 @@ class Admin extends CI_Controller {
 
 	        $product_ids = $this->input->post('product_id');
 
-	        $qty = $this->input->post('qty');
+	        $qtys = $this->input->post('qty');
+
 	        $ip = $_SERVER['REMOTE_ADDR'];
 	        $parent_id = 0;
 
@@ -933,12 +934,12 @@ class Admin extends CI_Controller {
             $this->Home_model->insertcart($data);
             $insert_id = $this->db->insert_id();
 
-            foreach($product_ids as $product_id){
-            	
+            foreach($product_ids as $k => $product_id){
+
             	if(!empty($product_id)){
 			        $this
 		            ->Home_model
-		            ->insertcartproductdetail($insert_id,$product_id,$qty,$user_id,$ip);	
+		            ->insertcartproductdetail($insert_id,$product_id,$qtys[$k],$user_id,$ip);	
             	}
             }
 
