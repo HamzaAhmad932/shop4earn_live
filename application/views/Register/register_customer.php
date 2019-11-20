@@ -104,7 +104,7 @@
                             <div class="col-md-6">
                                 <div class="form-group required-field">
                                     <label for="acc-lastname">Product</label>
-                                    <select class="form-control" name="product_id" required>
+                                    <select class="form-control" name="product_id[]" required>
                                         <option value="" selected>Select product</option>
                                         <?php foreach($products as $product):?>
                                             <option value="<?= $product->id;?>"><?= '('.$product->product_code.') '.$product->product_name.' (Rs. '.$product->product_price.')';?></option>
@@ -115,6 +115,66 @@
                             <div class="col-md-6">
                                 <div class="form-group required-field">
                                     <label for="acc-lastname">Quantity</label>
+                                    <input type="number" name="qty" class="form-control" value="1" required>
+                                </div><!-- End .form-group -->
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group required-field">
+                                    <!-- <label for="acc-lastname">Product</label> -->
+                                    <select class="form-control" name="product_id[]">
+                                        <option value="" selected>Select product</option>
+                                        <?php foreach($products as $product):?>
+                                            <option value="<?= $product->id;?>"><?= '('.$product->product_code.') '.$product->product_name.' (Rs. '.$product->product_price.')';?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </div><!-- End .form-group -->
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group required-field">
+                                    <!-- <label for="acc-lastname">Quantity</label> -->
+                                    <input type="number" name="qty" class="form-control" value="1" required>
+                                </div><!-- End .form-group -->
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group required-field">
+                                    <!-- <label for="acc-lastname">Product</label> -->
+                                    <select class="form-control" name="product_id[]">
+                                        <option value="" selected>Select product</option>
+                                        <?php foreach($products as $product):?>
+                                            <option value="<?= $product->id;?>"><?= '('.$product->product_code.') '.$product->product_name.' (Rs. '.$product->product_price.')';?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </div><!-- End .form-group -->
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group required-field">
+                                    <!-- <label for="acc-lastname">Quantity</label> -->
+                                    <input type="number" name="qty" class="form-control" value="1" required>
+                                </div><!-- End .form-group -->
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group required-field">
+                                    <!-- <label for="acc-lastname">Product</label> -->
+                                    <select class="form-control" name="product_id[]">
+                                        <option value="" selected>Select product</option>
+                                        <?php foreach($products as $product):?>
+                                            <option value="<?= $product->id;?>"><?= '('.$product->product_code.') '.$product->product_name.' (Rs. '.$product->product_price.')';?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </div><!-- End .form-group -->
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group required-field">
+                                    <!-- <label for="acc-lastname">Quantity</label> -->
                                     <input type="number" name="qty" class="form-control" value="1" required>
                                 </div><!-- End .form-group -->
                             </div>

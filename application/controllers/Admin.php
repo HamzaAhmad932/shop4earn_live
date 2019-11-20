@@ -876,7 +876,7 @@ class Admin extends CI_Controller {
 
         // $this->form_validation->set_rules('is_active', 'Activation status', 'required');
 
-        $this->form_validation->set_rules('product_id', 'Product', 'required');
+        // $this->form_validation->set_rules('product_id', 'Product', 'required');
 
         if($this->form_validation->run() == FALSE)
         {
@@ -898,7 +898,8 @@ class Admin extends CI_Controller {
 	                        $referal_id;
 	        $status = !empty($this->input->post('is_active'));
 
-	        $product_id = $this->input->post('product_id');
+	        $product_ids = $this->input->post('product_id');
+
 	        $qty = $this->input->post('qty');
 	        $ip = $_SERVER['REMOTE_ADDR'];
 	        $parent_id = 0;
@@ -932,9 +933,14 @@ class Admin extends CI_Controller {
             $this->Home_model->insertcart($data);
             $insert_id = $this->db->insert_id();
 
-	        $this
-                ->Home_model
-                ->insertcartproductdetail($insert_id,$product_id,$qty,$user_id,$ip);
+            foreach($product_ids as $product_id){
+            	
+            	if(!empty($product_id)){
+			        $this
+		            ->Home_model
+		            ->insertcartproductdetail($insert_id,$product_id,$qty,$user_id,$ip);	
+            	}
+            }
 
 	        if($status){
 	        	$this->Admin_model->deliverCommission($user_id);
