@@ -12,7 +12,7 @@ class Home extends CI_Controller {
     }
 
     public function playground(){
-        $user_id = 129;
+        $user_id = 131;
         $this->db->select('product_id');
         $this->db->from('tbl_cart_product');
         $this->db->where('user_id', $user_id);

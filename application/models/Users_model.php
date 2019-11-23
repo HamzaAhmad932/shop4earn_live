@@ -147,7 +147,7 @@ class Users_model extends CI_Model{
         $payout = $payout == '' ? 0 : $payout;
 
 
-        $total_earn = ($base_share_amount + $boster_share_amount + $direct_referal_bonus) - $payout;
+        $total_earn = ($base_share_amount + $boster_share_amount + $direct_referal_bonus);
 
         return $total_earn;
     }

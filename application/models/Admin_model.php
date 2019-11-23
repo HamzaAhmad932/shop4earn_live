@@ -184,6 +184,7 @@ class Admin_model extends CI_Model{
         $this->db->from('tbl_cart_product');
         $this->db->where('user_id', $user_id);
         $result = $this->db->get()->result_array();
+
         $products_id = array_column($result, 'product_id');
 
 		$upline_users=$this->Home_model->get_upline_users($user_id,$products_id);
