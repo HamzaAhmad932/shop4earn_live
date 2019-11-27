@@ -23,6 +23,9 @@ class Admin extends CI_Controller {
             $data['base_share_amount']=$this->Admin_model->base_share_amount();
             $data['boster_share_amount']=$this->Admin_model->boster_share_amount();
             $data['approved_users'] = $this->Admin_model->approvedUsers();
+            $data['total_active_customers'] = $this->Admin_model->totalActiveCustomers();
+            $data['total'] = $this->Admin_model->totalSale();
+
             $this->load->view('Admin_header/admin_header');
             $this->load->view('Admin_sidebar/admin_sidebar');
             $this->load->view('Admin_topbar/admin_topbar',$data);

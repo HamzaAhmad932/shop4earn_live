@@ -584,10 +584,44 @@ return array_merge($level1, $level2,$level3,$level4,$level5,$level6,$level7,$lev
 		$total_register_member= $total_credit->num_rows();
 		return $total_register_member;
 	}
+
+	public function totalSale(){
+
+		$sale = [];
+		$sql = "select sum(product_price) as total_price from tbl_cart_product;";
+		$sale['total_sale'] = $this->db->query($sql)->row()->total_price;
+		
+		$sql = "select sum(pv) as total_basic from tbl_cart_product;";
+		$sale['total_basic'] = $this->db->query($sql)->row()->total_basic;
+
+		$sql = "select sum(bv) as total_booster from tbl_cart_product;";
+		$sale['total_booster'] = $this->db->query($sql)->row()->total_booster;
+		
+
+		$sql = "select sum(product_price) - sum(purchase_cost) + sum(basic_vol) + sum(booster_vol) as product_profit from products;";
+		$sale['product_profit'] = $this->db->query($sql)->row()->product_profit;
+
+		$sql = "select sum(payout) as payment_paid from users;";
+		$sale['payment_paid'] = $this->db->query($sql)->row()->payment_paid;
+		
+		$sql = "select sum(withdraw_amount) as payment_pending from pending_payments where status = '0';";
+		$sale['payment_pending'] = $this->db->query($sql)->row()->payment_pending;
+
+
+
+
+		return $sale;
+	}
+
+	public function totalActiveCustomers(){
+
+		$sql = "select referal_id, count(referal_id) as ref_count from users where type = 2 group by 1 having ref_count > 2;";
+		return $this->db->query($sql)->num_rows();
+	}
 	public function base_share_amount(){
 		$this->db->select_sum('comission');
 	    $this->db->from('users');
-	    $this->db->where('(type = 2) ');
+	    //$this->db->where('(type = 2) ');
 	    $query = $this->db->get();
 	    $base_share_amount=$query->row()->comission;
 	    return $base_share_amount;
@@ -595,7 +629,7 @@ return array_merge($level1, $level2,$level3,$level4,$level5,$level6,$level7,$lev
 	public function boster_share_amount(){
 		$this->db->select_sum('booster_com');
 	    $this->db->from('users');
-	    $this->db->where('(type = 2) ');
+	    //$this->db->where('(type = 2) ');
 	    $query = $this->db->get();
 	    $boster_share_amount=$query->row()->booster_com;
 	    return $boster_share_amount;
