@@ -74,15 +74,15 @@
 
                             <div class="col-md-6">
                                 <div class="form-group required-field">
-                                    <label for="acc-lastname"> Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" required>
+                                    <label for="acc-lastname"> Password (Default : 123456)</label>
+                                    <input type="password" class="form-control" id="password" name="password" value="123456" required>
                                     <div style="color: red"><?php echo form_error('password'); ?></div>
                                 </div><!-- End .form-group -->
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group required-field">
                                     <label for="acc-lastname">Confirm Password</label>
-                                    <input type="password" class="form-control" id="cpassword" name="cpassword" required>
+                                    <input type="password" class="form-control" id="cpassword" name="cpassword" value="123456" required>
                                 </div><!-- End .form-group -->
                             </div>
                         </div>
