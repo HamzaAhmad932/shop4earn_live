@@ -48,13 +48,14 @@
                 <td><?php echo $r->password; ?></td>
                 <td><?php echo $r->referal_id; ?></td>
                 <td>
-                <a class="btn btn-primary btn-sm" href="<?php echo site_url("Admin/customer_tree");?>/<?php echo $r->id; ?>">View</a>
+                <!-- <a class="btn btn-primary btn-sm" href="<?php echo site_url("Admin/customer_tree");?>/<?php echo $r->id; ?>">View</a> -->
+                <a class="btn btn-primary btn-sm" href="<?php echo site_url("Users/index");?>/<?php echo $r->id; ?>">View</a>
                   <a class="btn btn-danger btn-sm" href="<?php echo site_url("Admin/edit_users");?>/<?php echo $r->id; ?>">Edit</a>
 
                   <a class="btn btn-info btn-sm" href="<?php echo site_url("Admin/Upline");?>/<?php echo $r->parent_id; ?>">Upline</a>
                    
                   <a class="btn btn-primary btn-sm" href="<?php echo site_url("Admin/Downline");?>/<?php echo $r->user_id; ?>">Downline</a>
-                  <a class="btn btn-danger btn-sm" href="#">Delete</a>
+                  <!-- <a class="btn btn-danger btn-sm" href="#">Delete</a> -->
 
                      <?php if($r->type != '1'):?> 
                       <?php if($r->type == '0'):?>

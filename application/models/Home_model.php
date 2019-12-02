@@ -399,15 +399,15 @@ public function chk_referal_id($referal_id){
         return $counter;
     }
 
-    public function insert_direct_bonus($user_id, $product_ids){
+    public function insert_direct_bonus($user_id, $commission){
 
-    	$this->db->select_sum('direct_sponser_bonus');
-		$this->db->where_in('id', $product_ids);
-		$this->db->from('products');
-		$query = $this->db->get();
-		$result = $query->row();
+  //   	$this->db->select_sum('direct_sponser_bonus');
+		// $this->db->where_in('id', $product_ids);
+		// $this->db->from('products');
+		// $query = $this->db->get();
+		// $result = $query->row();
 
-		$direct_bonus_amount = (float) $result->direct_sponser_bonus;
+		$direct_bonus_amount = (float) $commission;
 
 		if($direct_bonus_amount <= 0){
 			return;
@@ -429,16 +429,16 @@ public function chk_referal_id($referal_id){
 
     }
     
-public function get_upline_users($user_id,$pid, $test = false){
+public function get_upline_users($user_id, $comission , $test = false){
 
 
-		$this->db->select_sum('basic_vol');
-		$this->db->where_in('id', $pid);
-		$this->db->from('products');
-		$query = $this->db->get();
-		$result = $query->row();
+		// $this->db->select_sum('basic_vol');
+		// $this->db->where_in('id', $pid);
+		// $this->db->from('products');
+		// $query = $this->db->get();
+		// $result = $query->row();
 
-		$product_price = (float) $result->basic_vol;
+		$product_price = (float) $comission;
 
 		if($product_price <= 0){
 			return;
@@ -911,16 +911,16 @@ public function update_users_for_basic_comission($user_id, $comission){
 	
 	
 	
-	public function insert_boster($user_id,$pid, $test = false){
+	public function insert_boster($user_id, $commission, $test = false){
 
 
-		$this->db->select_sum('booster_vol');
-		$this->db->where_in('id', $pid);
-		$this->db->from('products');
-		$query = $this->db->get();
-		$result = $query->row();
+		// $this->db->select_sum('booster_vol');
+		// $this->db->where_in('id', $pid);
+		// $this->db->from('products');
+		// $query = $this->db->get();
+		// $result = $query->row();
 
-		$booster_comission = (int) $result->booster_vol;
+		$booster_comission = (float) $commission;
 
 		if($booster_comission <= 0){
 			return;
@@ -1725,6 +1725,7 @@ public function update_users_for_basic_comission($user_id, $comission){
 	    $this->db->set('product_price',$product->product_price);
 	    $this->db->set('quantity',$qty);
 	    $this->db->set('pv',$product->basic_vol);
+	    $this->db->set('direct',$product->direct_sponser_bonus);
 	    // $this->db->set('pv', 0);
 	    $this->db->set('bv',$product->booster_vol);
 	    // $this->db->set('bv',0);

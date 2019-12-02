@@ -141,10 +141,20 @@
                         </div>
                         <div class="col-md-6 col-lg-6 col-xl-3">
                             <div class="mini-stat clearfix bg-white">
-                                <span class="mini-stat-icon"></span>
+                                <span class="mini-stat-icon bg-pink"><i class="fa fa-users"></i></span>
                                 <div class="mini-stat-info text-right">
                                             <span class="counter text-warning">
+                                                <?php
+                                               if($total['direct_bonus'] > 0){
+                                                   echo round($total['direct_bonus'], 2);
+                                               }
+                                               else{
+                                                   echo "0";
+                                               }
+
+                                               ?>
                                             </span>
+                                            Total Direct Bonus
                                 </div>
                             </div>
                         </div>

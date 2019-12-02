@@ -180,16 +180,25 @@ class Admin_model extends CI_Model{
 
 	public function deliverCommission($user_id){
 
-		$this->db->select('product_id');
+		$this->db->select('*');
         $this->db->from('tbl_cart_product');
         $this->db->where('user_id', $user_id);
-        $result = $this->db->get()->result_array();
+        $result = $this->db->get();
 
-        $products_id = array_column($result, 'product_id');
 
-		$upline_users=$this->Home_model->get_upline_users($user_id,$products_id);
-        $insert_boster=$this->Home_model->insert_boster($user_id,$products_id);
-        $direct_bonus = $this->Home_model->insert_direct_bonus($user_id,$products_id);
+        $basic_com = 0;
+        $booster_com = 0;
+        $direct_comm = 0;
+        $rows = $result->result();
+        foreach ($rows as $user_product) {
+            $basic_com += $user_product->pv * $user_product->quantity;
+            $booster_com += $user_product->bv * $user_product->quantity;
+            $direct_comm += $user_product->direct * $user_product->quantity;
+        }
+
+		$upline_users=$this->Home_model->get_upline_users($user_id, $basic_com);
+        $insert_boster=$this->Home_model->insert_boster($user_id,$booster_com);
+        $direct_bonus = $this->Home_model->insert_direct_bonus($user_id,$direct_comm);
 	}
 	public function get_levels_setting(){
 		$this->db->select('*');
@@ -606,6 +615,10 @@ return array_merge($level1, $level2,$level3,$level4,$level5,$level6,$level7,$lev
 		
 		$sql = "select sum(withdraw_amount) as payment_pending from pending_payments where status = '0';";
 		$sale['payment_pending'] = $this->db->query($sql)->row()->payment_pending;
+
+		$sql = "select sum(direct_bonus) as direct_bonus from users;";
+
+		$sale['direct_bonus'] = $this->db->query($sql)->row()->direct_bonus;
 
 
 

@@ -12,13 +12,24 @@ class Home extends CI_Controller {
     }
 
     public function playground(){
-        $user_id = 131;
-        $this->db->select('product_id');
+        $user_id = 139;
+        $this->db->select('*');
         $this->db->from('tbl_cart_product');
         $this->db->where('user_id', $user_id);
-        $result = $this->db->get()->result_array();
-    
-        var_dump(array_column($result, 'product_id'));
+        $result = $this->db->get();
+        
+        $basic_com = 0;
+        $booster_com = 0;
+        $direct_comm = 0;
+        $rows = $result->result();
+        foreach ($rows as $user_product) {
+            $basic_com += $user_product->pv * $user_product->quantity;
+            $booster_com += $user_product->bv * $user_product->quantity;
+            $direct_comm += $user_product->direct * $user_product->quantity;
+        }
+
+        var_dump([$basic_com, $booster_com, $direct_comm]);
+
         die();
         return;
     }
