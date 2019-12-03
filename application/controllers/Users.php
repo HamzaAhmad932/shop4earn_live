@@ -7,14 +7,14 @@ class Users extends CI_Controller {
 		$this->load->model('Users_model');
 		$this->load->model('Admin_model');
 	}
-	public function index(){	 
+	public function index($u_id = null){	 
+
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
 		$data['full_name']=$sess_data;
 		$data['user_id'] = $sess_data['user_id'];
-		$user_id=$sess_data['user_id'];
-
+		$user_id = !empty($u_id) ? $u_id : $sess_data['user_id'];
 		$data['direct_referals']=$this->Users_model->direct_referals($user_id);
 		$data['get_comission']=$this->Users_model->get_comission($user_id);
 		$data['booster_com']=$this->Users_model->booster_com($user_id);
@@ -23,6 +23,7 @@ class Users extends CI_Controller {
 		$data['payout'] = $this->Users_model->totalPayout($user_id);
 		$member_level=$this->Users_model->member_level($user_id);
 		$data['downline'] = count($this->Admin_model->get_downline_data($user_id));
+
 		//print_r($member_level);die();
 		$get_level1_data=$this->Users_model->get_level1_data();
 		$get_level2_data=$this->Users_model->get_level2_data();
@@ -34,6 +35,8 @@ class Users extends CI_Controller {
 		$get_level8_data=$this->Users_model->get_level8_data();
 		$get_level9_data=$this->Users_model->get_level9_data();
 		$get_level10_data=$this->Users_model->get_level10_data();
+
+
 
 		if($member_level < $get_level1_data){
 			$data['level']="None";
