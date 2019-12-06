@@ -12,6 +12,13 @@ class Home extends CI_Controller {
     }
 
     public function playground(){
+        $addr = $_SERVER['SERVER_ADDR'];
+        $n = $_SESSION;
+        date_default_timezone_set('Asia/Karachi');
+        $date = date('Y-m-d h:i:s a', time());
+        var_dump([$addr, $n, $date]);
+        die();
+        return;
         $user_id = 139;
         $this->db->select('*');
         $this->db->from('tbl_cart_product');
@@ -86,6 +93,7 @@ class Home extends CI_Controller {
         $data['title'] = 'Home';
         $data['products']=$this->Home_model->get_products_data();
         $data['sliders'] = $this->Home_model->get_slider_data();
+        $this->Home_model->countVisitor($_SERVER['REMOTE_ADDR']);
 
         $this->load->view('v2/layout/head', $data);
         $this->load->view('v2/layout/header');

@@ -620,6 +620,10 @@ return array_merge($level1, $level2,$level3,$level4,$level5,$level6,$level7,$lev
 
 		$sale['direct_bonus'] = $this->db->query($sql)->row()->direct_bonus;
 
+		$sql = "select count(*) as visitor_count from visitor_count;";
+
+		$sale['visitor_count'] = $this->db->query($sql)->row()->visitor_count;
+
 
 
 

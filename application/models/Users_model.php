@@ -3,6 +3,17 @@ class Users_model extends CI_Model{
 	public function __construct(){
 		parent::__construct();
 	}
+
+    public function getUser($user_id){
+        
+        $this->db->select('*');
+        $this->db->from('users');
+        $this->db->where('user_id',$user_id);
+        //$this->db->where('type','2');
+        $query=$this->db->get();
+        return $query->row();
+
+    }
     public function direct_referals($user_id){
 		$this->db->select('*');
 		$this->db->from('users');

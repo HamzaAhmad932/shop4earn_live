@@ -35,7 +35,7 @@
                                     
                                 </li>
                                  <li class="hide-phone list-inline-item app-search pull-right">
-                                    <h3 class="page-title">Welcome <?php print_r($full_name['full_name']); ?></h3>
+                                    <h3 class="page-title">Welcome <?php echo $full_name?></h3>
                                     
                                 </li>
                             </ul>

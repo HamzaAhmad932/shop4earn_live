@@ -17,7 +17,7 @@ class Admin extends CI_Controller {
 	public function index(){
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
-            $data['full_name']=$sess_data;
+            $data['full_name']=$sess_data['full_name'];
             $admin_id = $sess_data['id'];
             $data['total_register_member']=$this->Admin_model->total_register_member();
             $data['base_share_amount']=$this->Admin_model->base_share_amount();
@@ -53,7 +53,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$data['row']=$this->Admin_model->get_customers();
 
@@ -72,7 +72,7 @@ class Admin extends CI_Controller {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
 
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$data['row']=$this->Admin_model->get_customers_tree($id);
 		$data['parent_data']=$this->Admin_model->get_customers_id_data($id);
@@ -93,7 +93,7 @@ class Admin extends CI_Controller {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
 
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$data['level1']=$this->Admin_model->get_upline_data($parent_id);
 		//$data['level1']=$this->Admin_model->get_upline_data($parent_id);
@@ -116,7 +116,7 @@ class Admin extends CI_Controller {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
 
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$data['row']=$this->Admin_model->get_downline_data($user_id);
 
@@ -136,7 +136,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$data['default_parent_id']=$this->Admin_model->get_default_parent_id();
 		//print_r($data['row']);die();
@@ -156,7 +156,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 
 		      $level_standard = $this->input->post('level_number');
@@ -182,7 +182,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$data['comission']=$this->Admin_model->get_comission_setting();
 		$this->load->view('Admin_header/admin_header');
@@ -200,7 +200,7 @@ class Admin extends CI_Controller {
 			if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
                 $level = $this->input->post('level');
                 $basic = $this->input->post('basic');
@@ -227,7 +227,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$admin_id = $sess_data['id'];
 		$parent_id=$this->input->post('default_parent_id');
@@ -249,7 +249,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$data['row']=$this->Admin_model->get_product_data();
 		$this->load->view('Admin_header/admin_header');
@@ -267,7 +267,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$this->load->view('Admin_header/admin_header');
 		$this->load->view('Admin_sidebar/admin_sidebar');
@@ -352,7 +352,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		if($this->Admin_model->approve_product($id)){
 	    redirect ('Admin/Products');
@@ -370,7 +370,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$data['products']=$this->Admin_model->get_product_view($id);
 		$this->load->view('Admin_header/admin_header');
@@ -388,7 +388,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$data['products']=$this->Admin_model->get_product_view($id);
 		$this->load->view('Admin_header/admin_header');
@@ -472,7 +472,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$data['row']=$this->Admin_model->get_category_data();
 		$this->load->view('Admin_header/admin_header');
@@ -490,7 +490,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$this->load->view('Admin_header/admin_header');
 		$this->load->view('Admin_sidebar/admin_sidebar');
@@ -524,7 +524,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$data['category']=$this->Admin_model->get_category_view($id);
 		$this->load->view('Admin_header/admin_header');
@@ -542,7 +542,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 		$data['category']=$this->Admin_model->get_category_view($id);
 		$this->load->view('Admin_header/admin_header');
@@ -596,7 +596,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 
 		$data['row']=$this->Admin_model->get_pending_payments();
@@ -628,7 +628,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 
 		$data['row']=$this->Admin_model->get_approved_payments();
@@ -647,7 +647,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 
  		$data['row']=$this->Admin_model->get_orders();
@@ -666,7 +666,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$admin_id = $sess_data['id'];
 
 
@@ -687,7 +687,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 
 			$sess_data=$this->session->userdata('logged_in');
-			$data['full_name']=$sess_data;
+			$data['full_name']=$sess_data['full_name'];
 			$admin_id = $sess_data['id'];
 			$data['user']=$this->Admin_model->get_user_detail($id);
 			$this->load->view('Admin_header/admin_header');
@@ -740,7 +740,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 
 			$sess_data=$this->session->userdata('logged_in');
-			$data['full_name']=$sess_data;
+			$data['full_name']=$sess_data['full_name'];
 			$admin_id = $sess_data['id'];
 			// $data['user']=$this->Admin_model->get_user_detail($admin_id);
 			$this->load->view('Admin_header/admin_header');
@@ -761,7 +761,7 @@ class Admin extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 
 			$sess_data=$this->session->userdata('logged_in');
-			$data['full_name']=$sess_data;
+			$data['full_name']=$sess_data['full_name'];
 			$admin_id = $sess_data['id'];
 			$data['images']=$this->Admin_model->getSliderImages();
 			$this->load->view('Admin_header/admin_header');
@@ -835,7 +835,7 @@ class Admin extends CI_Controller {
 
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
-            $data['full_name']=$sess_data;
+            $data['full_name']=$sess_data['full_name'];
             $data['user_id']=$this->Home_model->get_user_id();
             $data['products'] = $this->Home_model->get_products_data();
             

@@ -10,11 +10,20 @@ class Users extends CI_Controller {
 	public function index($u_id = null){	 
 
 		if(isset($this->session->userdata['logged_in'])) {
-			$sess_data=$this->session->userdata('logged_in');
-			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
-		$data['user_id'] = $sess_data['user_id'];
-		$user_id = !empty($u_id) ? $u_id : $sess_data['user_id'];
+
+			if(empty($u_id)){
+				$sess_data=$this->session->userdata('logged_in');
+				$data['full_name']=$sess_data['full_name'];
+				$data['user_id'] = $sess_data['user_id'];
+				$user_id = $sess_data['user_id'];
+			}else{
+
+				$user = $this->Users_model->getUser($u_id);
+				$data['full_name']=$user->full_name;
+				$data['user_id'] = $user->user_id;
+				$user_id = $user->user_id;
+			}
+			
 		$data['direct_referals']=$this->Users_model->direct_referals($user_id);
 		$data['get_comission']=$this->Users_model->get_comission($user_id);
 		$data['booster_com']=$this->Users_model->booster_com($user_id);
@@ -136,7 +145,7 @@ class Users extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$data['user_id'] = $sess_data['user_id'];
 		$user_id=$sess_data['user_id'];
 
@@ -156,7 +165,7 @@ class Users extends CI_Controller {
 		if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$data['user_id'] = $sess_data['user_id'];
 		$user_id=$sess_data['user_id'];
 		$password = $this->input->post('password');
@@ -247,7 +256,7 @@ class Users extends CI_Controller {
 			if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$data['user_id'] = $sess_data['user_id'];
 		$user_id=$sess_data['user_id'];
 
@@ -269,7 +278,7 @@ class Users extends CI_Controller {
 			if(isset($this->session->userdata['logged_in'])) {
 			$sess_data=$this->session->userdata('logged_in');
 			//print_r($sess_data); die();
-		$data['full_name']=$sess_data;
+		$data['full_name']=$sess_data['full_name'];
 		$data['user_id'] = $sess_data['user_id'];
 		$user_id=$sess_data['user_id'];
 

@@ -267,6 +267,21 @@
 
                             </div>
                         </div>
+
+                        <div class="col-md-6 col-lg-6 col-xl-3">
+                            <div class="mini-stat clearfix bg-white">
+                                <span class="mini-stat-icon bg-teal "><i class="fa fa-envelope"></i></span>
+                                <div class="mini-stat-info text-right">
+                                            <span class="counter text-warning">
+                                                <?php 
+                                                    echo $total['visitor_count'];
+                                                ?>
+                                            </span>
+                                    Site visitors
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
 
 

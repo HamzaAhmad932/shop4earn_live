@@ -19,6 +19,36 @@ class Home_model extends CI_Model{
 		$result = $this->db->query($sql)->result();
 		return $result;
 	}
+	public function countVisitor($ip){
+
+		date_default_timezone_set('Asia/Karachi');
+        $date = date('Y-m-d h:i:s a', time());
+        $ip = $_SERVER['SERVER_ADDR'];
+
+        
+        	$data = [
+        		//'count'=> 1,
+        		'ip'=> $ip,
+        		'date'=> $date
+        	];
+
+        	$this->db->insert('visitor_count', $data);
+
+        // $this->db->select('*');
+        // $this->db->from('visitor_count');
+        // $this->db->where('ip', $ip);
+        // $q1 = $this->db->get();
+        // $existed = $q1->num_rows();
+        // if($existed > 0){
+        // 	$this->db->where('ip', $ip);
+        // 	$this->db->set("date", $date);
+        // 	$this->db->set("count", "count + 1", FALSE);
+        // 	$this->db->update('visitor_count');
+
+        // }else{
+
+        // }
+	}
 	public function login($username,$password){
 		$this->db->select('*');
 		$this->db->from('users');
