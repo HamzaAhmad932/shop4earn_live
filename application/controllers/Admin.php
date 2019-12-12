@@ -26,11 +26,17 @@ class Admin extends CI_Controller {
             $data['total_active_customers'] = $this->Admin_model->totalActiveCustomers();
             $data['total'] = $this->Admin_model->totalSale();
 
-            $this->load->view('Admin_header/admin_header');
-            $this->load->view('Admin_sidebar/admin_sidebar');
-            $this->load->view('Admin_topbar/admin_topbar',$data);
-            $this->load->view('Admin_body/admin_body',$data);
-            $this->load->view('Admin_footer/admin_footer');
+            $this->load->view('admin/layout/head');
+            $this->load->view('admin/layout/header');
+            $this->load->view('admin/components/dashboard');
+            $this->load->view('admin/layout/footer');
+
+
+            // $this->load->view('Admin_header/admin_header');
+            // $this->load->view('Admin_sidebar/admin_sidebar');
+            // $this->load->view('Admin_topbar/admin_topbar',$data);
+            // $this->load->view('Admin_body/admin_body',$data);
+            // $this->load->view('Admin_footer/admin_footer');
 		}
 		else{
 

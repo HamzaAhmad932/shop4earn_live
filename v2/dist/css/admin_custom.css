@@ -1,0 +1,17 @@
+
+.nav-link{
+	font-size: 13px !important;
+}
+
+[class*=sidebar-dark-] .sidebar a {
+    color: #ffffff !important;
+}
+
+.nav-sidebar>.nav-item .nav-icon.fa{
+	font-size: 0.8rem !important;
+}
+
+.main-sidebar, .main-sidebar::before {
+    transition: margin-left .3s ease-in-out,width .3s ease-in-out;
+    width: 230px !important;
+}
