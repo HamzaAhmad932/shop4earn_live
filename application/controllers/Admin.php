@@ -621,7 +621,22 @@ class Admin extends CI_Controller {
 	    redirect ('Admin/pending_payments');
 		}
 		else{
-				redirect('Login1');
+			redirect('Login1');
+		}
+	}
+
+	public function delete_pending_payment($id){
+
+		if(isset($this->session->userdata['logged_in'])) {
+			$sess_data=$this->session->userdata('logged_in');
+			//print_r($sess_data); die();
+		$data['username']=$sess_data;
+		$status="1";
+		$this->Admin_model->delete_pending_payment($id);
+	    redirect ('Admin/pending_payments');
+		}
+		else{
+			redirect('Login1');
 		}
 	}
 	public function approve_payments(){

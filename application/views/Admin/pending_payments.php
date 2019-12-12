@@ -29,7 +29,7 @@
               <th>Amount</th>
               <th>Method</th>
               <th>Date Time</th>
-               <th>Status</th>
+               <th>Actions</th>
          </tr>
          </thead>
          <tbody>
@@ -48,10 +48,12 @@
                   <?php 
                   $status=$r->status;
                   if($status=='0'){ ?>
-                  <a class="btn btn-danger btn-sm" href="<?php echo site_url("Admin/admin_approved_payments");?>/<?php echo $r->id; ?>" onclick="clickAndDisable(this);">Approve</a></td>
+                  <a class="btn btn-primary btn-sm" href="<?php echo site_url("Admin/admin_approved_payments");?>/<?php echo $r->id; ?>" onclick="clickAndDisable(this);">Approve</a>
                 <?php  }else{ ?>
-                  <a class="btn btn-success btn-sm disabled" style="color: white;">Approve</a></td>
+                  <a class="btn btn-success btn-sm disabled" style="color: white;">Approve</a>
                 <?php }  ?>
+
+                <a class="btn btn-danger btn-sm" href="<?php echo site_url("Admin/delete_pending_payment");?>/<?php echo $r->id; ?>" onclick="clickAndDisable(this);">Delete</a>
                 </td>
                
  

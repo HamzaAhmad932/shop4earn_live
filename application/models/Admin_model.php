@@ -663,6 +663,12 @@ return array_merge($level1, $level2,$level3,$level4,$level5,$level6,$level7,$lev
             return false;
         }
 	}
+
+	public function delete_pending_payment($id){
+
+		$this->db->where('id', $id);
+		$this->db->delete('pending_payments'); 
+	}
 	public function admin_approved_payments($id,$status){
 
 		$this->db->set('status',$status);
