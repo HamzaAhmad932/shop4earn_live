@@ -11,34 +11,186 @@ class Home extends CI_Controller {
         $this->load->helper('dump');
     }
 
-    public function playground(){
-        $addr = $_SERVER['SERVER_ADDR'];
-        $n = $_SESSION;
-        date_default_timezone_set('Asia/Karachi');
-        $date = date('Y-m-d h:i:s a', time());
-        var_dump([$addr, $n, $date]);
-        die();
-        return;
-        $user_id = 139;
-        $this->db->select('*');
-        $this->db->from('tbl_cart_product');
-        $this->db->where('user_id', $user_id);
-        $result = $this->db->get();
+    public function recursive_fun($referal_id, $count){
+
+
+        $this->db->select("GROUP_CONCAT(user_id) as my_ids");
+        $this->db->where_in("parent_id", $referal_id);
+        $this->db->where("type", "2");
+        $query = $this->db->get('users')->result_array();
+        $my_ids     =   $query[0]['my_ids'];
+
+        if(empty($my_ids)){
+            return $count;
+        }
         
-        $basic_com = 0;
-        $booster_com = 0;
-        $direct_comm = 0;
-        $rows = $result->result();
-        foreach ($rows as $user_product) {
-            $basic_com += $user_product->pv * $user_product->quantity;
-            $booster_com += $user_product->bv * $user_product->quantity;
-            $direct_comm += $user_product->direct * $user_product->quantity;
+        $childs = explode(',',$my_ids);
+
+        if(count($childs) > 0){
+            $c = count($childs) + $count;
+            print_r(['count:'=> $count, 'child: '=> $childs, 'loop_count: '=> count($childs)]);
+            echo "<br>";
+            return $this->recursive_fun($childs, $c);
+        }else{
+
+            return $count;
         }
 
-        var_dump([$basic_com, $booster_com, $direct_comm]);
+    }
 
+    public function download_send_headers($filename) {
+        // disable caching
+        $now = gmdate("D, d M Y H:i:s");
+        header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
+        header("Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate");
+        header("Last-Modified: {$now} GMT");
+
+        // force download  
+        header("Content-Type: application/force-download");
+        header("Content-Type: application/octet-stream");
+        header("Content-Type: application/download");
+
+        // disposition / encoding on response body
+        header("Content-Disposition: attachment;filename={$filename}");
+        header("Content-Transfer-Encoding: binary");
+    }
+
+    public function array2csv(array &$array)
+    {
+       if (count($array) == 0) {
+         return null;
+       }
+       ob_start();
+       $df = fopen("php://output", 'w');
+       fputcsv($df, array_keys(reset($array)));
+       foreach ($array as $row) {
+          fputcsv($df, $row);
+       }
+       fclose($df);
+       return ob_get_clean();
+    }
+
+    public function getcsv(){
+
+        $list = [
+            ['user_id'=> 1, 'name'=> 'Admin', 'Power'=> 140, 'weaker'=> 0],
+            ['user_id'=> 1, 'name'=> 'Admin', 'Power'=> 140, 'weaker'=> 0],
+            ['user_id'=> 1, 'name'=> 'Admin', 'Power'=> 140, 'weaker'=> 0],
+            ['user_id'=> 1, 'name'=> 'Admin', 'Power'=> 140, 'weaker'=> 0],
+            ['user_id'=> 1, 'name'=> 'Admin', 'Power'=> 140, 'weaker'=> 0],
+            ['user_id'=> 1, 'name'=> 'Admin', 'Power'=> 140, 'weaker'=> 0],
+        ];
+
+        $this->download_send_headers("data_export_" . date("Y-m-d") . ".csv");
+        echo $this->array2csv($list);
+        die();
+
+    }
+
+
+
+    public function playground(){
+
+        $this->db->select('user_id, full_name'); 
+        $this->db->from('users');   
+        $this->db->where('type', "2");
+        $users = $this->db->get()->result_array();
+
+        $ids = array_column($users, 'user_id');
+
+        $report_array = [];
+
+        foreach ($ids as $key => $id) {
+
+            $this->db->select('user_id, full_name');
+            $this->db->where('parent_id', $id);
+            $this->db->where('type', '2');
+            $this->db->from('users');
+            $child_ids = $this->db->get()->result_array();
+
+
+            $parent = $this->recursive_fun($id, 0);
+            $c1 = 0;
+            $c2 = 0;
+            if(!empty($child_ids[0]['user_id'])){
+                $c1 = $this->recursive_fun($child_ids[0]['user_id'], 0);
+            }
+
+            if(!empty($child_ids[1]['user_id'])){
+                $c2 = $this->recursive_fun($child_ids[1]['user_id'], 0);
+            }
+
+            $power = ($c1 > $c2) ? $c1 : $c2;
+
+
+            $r_arr = [
+                'User ID'=> $id,
+                'Name'=> $users[$key]['full_name'],
+                'Total Sub Members'=> $parent,
+                'Child 1'=> !empty($child_ids[0]['user_id']) ? $child_ids[0]['user_id'] : '',
+                'Child 2'=> !empty($child_ids[1]['user_id']) ? $child_ids[1]['user_id'] : '',
+            ];
+
+            if($c1 >= $c2){
+                $r_arr['Power'] = $c1;
+                $r_arr['Weak'] = $c2;
+                $r_arr['Power ID'] = !empty($child_ids[0]['user_id']) ? $child_ids[0]['user_id'] : '';
+                $r_arr['Power Name'] = !empty($child_ids[0]['full_name']) ? $child_ids[0]['full_name'] : '';
+            }else{
+
+                $r_arr['Power'] = $c2;
+                $r_arr['Weak'] = $c1;
+                $r_arr['Power ID'] = !empty($child_ids[1]['user_id']) ? $child_ids[1]['user_id'] : '';
+                $r_arr['Power Name'] = !empty($child_ids[1]['full_name']) ? $child_ids[1]['full_name'] : '';
+            }
+
+            array_push($report_array, $r_arr);
+        }
+
+        
+
+        $this->download_send_headers("data_export_" . date("Y-m-d") . ".xls");
+        echo $this->array2csv($report_array);
         die();
         return;
+
+
+        $this->db->select("GROUP_CONCAT(user_id) as my_ids");
+        $this->db->where_in("parent_id", $referal_id);
+        $this->db->where("type", "2");
+        $query = $this->db->get('users')->result_array();
+        $my_ids     =   $query[0]['my_ids'];
+        $childs   =   explode(',',$my_ids);
+        var_dump(count($childs));
+        die();
+        return;
+        // $addr = $_SERVER['SERVER_ADDR'];
+        // $n = $_SESSION;
+        // date_default_timezone_set('Asia/Karachi');
+        // $date = date('Y-m-d h:i:s a', time());
+        // var_dump([$addr, $n, $date]);
+        // die();
+        // return;
+        // $user_id = 139;
+        // $this->db->select('*');
+        // $this->db->from('tbl_cart_product');
+        // $this->db->where('user_id', $user_id);
+        // $result = $this->db->get();
+        
+        // $basic_com = 0;
+        // $booster_com = 0;
+        // $direct_comm = 0;
+        // $rows = $result->result();
+        // foreach ($rows as $user_product) {
+        //     $basic_com += $user_product->pv * $user_product->quantity;
+        //     $booster_com += $user_product->bv * $user_product->quantity;
+        //     $direct_comm += $user_product->direct * $user_product->quantity;
+        // }
+
+        // var_dump([$basic_com, $booster_com, $direct_comm]);
+
+        // die();
+        // return;
     }
     
     public function basic_test($user_id, $product_id){

@@ -1,31 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Shop4Earn | Dashboard</title>
+  <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-
-  <title>Shop4Eearn | Dashboard</title>
-
-  <!-- Font Awesome Icons -->
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="<?= base_url('v2/plugins/fontawesome-free/css/all.min.css')?>">
-  <!-- IonIcons -->
-  <link rel="stylesheet" href="<?= base_url('v2/plugins/ionicons/2.0.1/css/ionicons.min.css')?>">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="<?= base_url('v2/plugins/code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')?>">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="<?= base_url('v2/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')?>">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= base_url('v2/dist/css/adminlte.min.css')?>">
-  <link rel="stylesheet" href="<?= base_url('v2/dist/css/admin_custom.css')?>">
   <!-- Google Font: Source Sans Pro -->
-  <!-- <link href="../../../../fonts.googleapis.com/css610e.css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"> -->
+  <!-- <link href="../../../../../../fonts.googleapis.com/css610e.css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"> -->
 </head>
-<!--
-BODY TAG OPTIONS:
-=================
-Apply one or more of the following classes to to the body tag
-to get the desired effect
-|---------------------------------------------------------|
-|LAYOUT OPTIONS | sidebar-collapse                        |
-|               | sidebar-mini                            |
-|---------------------------------------------------------|
--->
-<body class="hold-transition sidebar-mini ">
+<body class="hold-transition sidebar-mini layout-fixed">
+<!-- Site wrapper -->
 <div class="wrapper">
