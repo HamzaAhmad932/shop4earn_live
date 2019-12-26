@@ -11,7 +11,102 @@ class Home extends CI_Controller {
         $this->load->helper('dump');
     }
 
+    public function recursive_fun($referal_id, $count){
+
+
+        $this->db->select("GROUP_CONCAT(user_id) as my_ids");
+        $this->db->where_in("parent_id", $referal_id);
+        $this->db->where("type", "2");
+        $query = $this->db->get('users')->result_array();
+        $my_ids     =   $query[0]['my_ids'];
+
+        if(empty($my_ids)){
+            return $count;
+        }
+        
+        $childs = explode(',',$my_ids);
+
+        if(count($childs) > 0){
+            $c = count($childs) + $count;
+            // print_r(['count:'=> $count, 'child: '=> $childs, 'loop_count: '=> count($childs)]);
+            // echo "<br>";
+            return $this->recursive_fun($childs, $c);
+        }else{
+
+            return $count;
+        }
+
+    }
+
     public function playground(){
+
+        $this->db->select('user_id, full_name'); 
+        $this->db->from('users');   
+        $this->db->where('type', "2");
+        $users = $this->db->get()->result_array();
+
+        $ids = array_column($users, 'user_id');
+
+        $report_array = [];
+
+        foreach ($ids as $key => $id) {
+
+            $this->db->select('user_id, full_name');
+            $this->db->where('parent_id', $id);
+            $this->db->where('type', '2');
+            $this->db->from('users');
+            $child_ids = $this->db->get()->result_array();
+
+
+            $parent = $this->recursive_fun($id, 0);
+            $c1 = 0;
+            $c2 = 0;
+            if(!empty($child_ids[0]['user_id'])){
+                $c1 = $this->recursive_fun($child_ids[0]['user_id'], 0);
+            }
+
+            if(!empty($child_ids[1]['user_id'])){
+                $c2 = $this->recursive_fun($child_ids[1]['user_id'], 0);
+            }
+
+            $power = ($c1 > $c2) ? $c1 : $c2;
+
+
+            $r_arr = [
+                'user_id'=> $id,
+                'name'=> $users[$key]['full_name'],
+                'total_sub_members'=> $parent,
+                'child_1'=> !empty($child_ids[0]['user_id']) ? $child_ids[0]['user_id'] : '',
+                'child_2'=> !empty($child_ids[1]['user_id']) ? $child_ids[1]['user_id'] : '',
+            ];
+
+            if($c1 >= $c2){
+                $r_arr['power'] = $c1;
+                $r_arr['weak'] = $c2;
+                $r_arr['power_id'] = !empty($child_ids[0]['user_id']) ? $child_ids[0]['user_id'] : '';
+                $r_arr['power_name'] = !empty($child_ids[0]['full_name']) ? $child_ids[0]['full_name'] : '';
+            }else{
+
+                $r_arr['power'] = $c2;
+                $r_arr['weak'] = $c1;
+                $r_arr['power_id'] = !empty($child_ids[1]['user_id']) ? $child_ids[1]['user_id'] : '';
+                $r_arr['power_name'] = !empty($child_ids[1]['full_name']) ? $child_ids[1]['full_name'] : '';
+            }
+
+            array_push($report_array, $r_arr);
+        }
+
+        $power = array_column($report_array, 'power');
+
+        array_multisort($power, SORT_DESC, $report_array);
+
+        $data['users'] = $report_array;
+
+        $this->load->view('v2/table', $data);
+    }
+
+
+    public function playground1(){
         $addr = $_SERVER['SERVER_ADDR'];
         $n = $_SESSION;
         date_default_timezone_set('Asia/Karachi');
