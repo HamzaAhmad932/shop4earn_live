@@ -83,12 +83,14 @@ class Home extends CI_Controller {
             if($c1 >= $c2){
                 $r_arr['power'] = $c1;
                 $r_arr['weak'] = $c2;
+                $r_arr['diff'] = $c1 - $c2;
                 $r_arr['power_id'] = !empty($child_ids[0]['user_id']) ? $child_ids[0]['user_id'] : '';
                 $r_arr['power_name'] = !empty($child_ids[0]['full_name']) ? $child_ids[0]['full_name'] : '';
             }else{
 
                 $r_arr['power'] = $c2;
                 $r_arr['weak'] = $c1;
+                $r_arr['diff'] = $c2 - $c1;
                 $r_arr['power_id'] = !empty($child_ids[1]['user_id']) ? $child_ids[1]['user_id'] : '';
                 $r_arr['power_name'] = !empty($child_ids[1]['full_name']) ? $child_ids[1]['full_name'] : '';
             }
