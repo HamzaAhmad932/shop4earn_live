@@ -16,7 +16,7 @@
     <link rel="icon" type="image/x-icon" href="<?php echo base_url('v2/assets/images/icons/favicon.ico')?>">
 
     <!-- Plugins CSS File -->
-    <link rel="stylesheet" href="<?php echo base_url('v2/assets/css/bootstrap.min.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('v2/assets/bootstrap/css/bootstrap.min.css')?>">
 
     <!-- Main CSS File -->
     <link rel="stylesheet" href="<?php echo base_url('v2/assets/css/style.min.css')?>">

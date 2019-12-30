@@ -11,7 +11,7 @@
         <!-- C3 charts css -->
         <link href="<?php echo base_url('style_admin/css/c3.min.css') ?>" rel="stylesheet" type="text/css">
         <!-- Basic Css files -->
-        <link href="<?php echo base_url('style_admin/css/bootstrap.min.css') ?>" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="<?php echo base_url('v2/assets/bootstrap/css/bootstrap.min.css')?>">
         <link href="<?php echo base_url('style_admin/css/icons.css') ?>" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url('style_admin/css/style.css') ?>" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url('style_admin/css/custom.css') ?>" rel="stylesheet" type="text/css">

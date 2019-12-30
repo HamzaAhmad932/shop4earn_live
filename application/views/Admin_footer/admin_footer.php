@@ -11,7 +11,7 @@
 <!-- jQuery  -->
 <script src="<?php echo base_url('style_admin/js/jquery.min.js') ?>"></script>
 <script src="<?php echo base_url('style_admin/js/tether.min.js') ?>"></script><!-- Tether for Bootstrap -->
-<script src="<?php echo base_url('style_admin/js/bootstrap.min.js') ?>"></script>
+<script src="<?php echo base_url('v2/assets/bootstrap/js/bootstrap.bundle.min.js')?>"></script>
 <script src="<?php echo base_url('style_admin/js/modernizr.min.js') ?>"></script>
 <script src="<?php echo base_url('style_admin/js/jquery.slimscroll.js') ?>"></script>
 <script src="<?php echo base_url('style_admin/js/waves.js') ?>"></script>

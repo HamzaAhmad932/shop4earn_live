@@ -902,9 +902,9 @@ class Admin extends CI_Controller {
         
         }else{
             
-
+           
             $referal_id = $this->input->post('referal_id');
-            
+            $position = $this->input->post('positionGroup');
 
 	        $email = !empty($this->input->post('email')) ? $this->input->post('email') : '';
 	        $user_id = $this->Home_model->get_user_id();
@@ -923,9 +923,20 @@ class Admin extends CI_Controller {
 	        $ip = $_SERVER['REMOTE_ADDR'];
 	        $parent_id = 0;
 
-	        if($status){
+	        if($status && $position == '3'){
 
+	        	#	3 is for Random tree position
 	        	$parent_id = $this->Admin_model->get_tree_node_from_referral($referal_id);
+	        	var_dump($parent_id);
+	        	die();
+	        	return;
+	        }
+
+	        if ($status && $position != '3') {
+	        	
+	        	#  1, 2 is for Left and Right tree postion 
+
+	        	$parent_id = $this->Admin_model->getTreeNodeFromManualPosition($referal_id, $position);
 	        }
 
 

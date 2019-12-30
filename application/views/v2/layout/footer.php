@@ -176,7 +176,7 @@
 
 <!-- Plugins JS File -->
 <script src="<?php echo base_url('v2/assets/js/jquery.min.js')?>"></script>
-<script src="<?php echo base_url('v2/assets/js/bootstrap.bundle.min.js')?>"></script>
+<script src="<?php echo base_url('v2/assets/bootstrap/js/bootstrap.min.js')?>"></script>
 <script src="<?php echo base_url('v2/assets/js/plugins.min.js')?>"></script>
 
 <!-- Main JS File -->

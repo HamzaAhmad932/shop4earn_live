@@ -148,6 +148,42 @@ class Admin_model extends CI_Model{
 			return $this->find_tree_node($referral_id);
 		}
 	}
+
+	public function getTreeNodeFromManualPosition($referal_id, $position){
+
+		return $position == '1' ? $this->findLeftPosition($referal_id) : $this->findRightPosition($referal_id);
+	}
+
+	public function findLeftPosition($referal_id){
+
+		$this->db->select("user_id");
+	    $this->db->where_in("parent_id", $referal_id);
+	    $this->db->where("type", "2");
+	    $query = $this->db->get('users')->result_array();
+	    $left_ids     =   array_column($query, 'user_id');
+
+	    if(count($left_ids) == 0){
+	    	return $referal_id; # 0 index indicate the left node of tree
+	    }
+
+	    return $this->findLeftPosition($left_ids[0]);
+	}
+	public function findRightPosition($referal_id){
+
+		$this->db->select("user_id");
+	    $this->db->where_in("parent_id", $referal_id);
+	    $this->db->where("type", "2");
+	    $query = $this->db->get('users')->result_array();
+	    $right_ids     =   array_column($query, 'user_id');
+
+	    if(count($right_ids) == 0){
+	    	return $referal_id; # 1 index indicate the right node of tree
+	    }
+
+	    $ref_id = count($right_ids) > 1 ? $right_ids[1] : $right_ids[0];
+
+	    return $this->findRightPosition($ref_id);
+	}
 	public function approve_users($id){
 
 		$this->db->where('user_id', $id);
