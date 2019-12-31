@@ -927,9 +927,6 @@ class Admin extends CI_Controller {
 
 	        	#	3 is for Random tree position
 	        	$parent_id = $this->Admin_model->get_tree_node_from_referral($referal_id);
-	        	var_dump($parent_id);
-	        	die();
-	        	return;
 	        }
 
 	        if ($status && $position != '3') {
