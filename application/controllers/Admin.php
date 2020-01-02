@@ -936,6 +936,10 @@ class Admin extends CI_Controller {
 	        	$parent_id = $this->Admin_model->getTreeNodeFromManualPosition($referal_id, $position);
 	        }
 
+	        // var_dump($parent_id);
+	        // die();
+	        // return;
+
 
 	        $data = [
 	                'user_id'   => $user_id,

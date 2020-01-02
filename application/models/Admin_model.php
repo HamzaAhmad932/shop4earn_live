@@ -176,7 +176,7 @@ class Admin_model extends CI_Model{
 	    $query = $this->db->get('users')->result_array();
 	    $right_ids     =   array_column($query, 'user_id');
 
-	    if(count($right_ids) == 0){
+	    if(count($right_ids) == 0 || count($right_ids) < 2){
 	    	return $referal_id; # 1 index indicate the right node of tree
 	    }
 
