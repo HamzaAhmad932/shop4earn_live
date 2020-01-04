@@ -168,7 +168,7 @@ class Admin_model extends CI_Model{
 
 	    return $this->findLeftPosition($left_ids[0]);
 	}
-	public function findRightPosition($referal_id){
+	public function findRightPosition($referal_id, $is_main_referal=true){
 
 		$this->db->select("user_id");
 	    $this->db->where_in("parent_id", $referal_id);
@@ -176,13 +176,17 @@ class Admin_model extends CI_Model{
 	    $query = $this->db->get('users')->result_array();
 	    $right_ids     =   array_column($query, 'user_id');
 
-	    if(count($right_ids) < 1){
+	    if(count($right_ids) == 0){
 	    	return $referal_id; # 1 index indicate the right node of tree
+	    }
+
+	    if($is_main_referal && count($right_ids) < 2){
+	    	return $referal_id;
 	    }
 
 	    $ref_id = count($right_ids) > 1 ? $right_ids[1] : $right_ids[0];
 
-	    return $this->findRightPosition($ref_id);
+	    return $this->findRightPosition($ref_id, false);
 	}
 	public function approve_users($id){
 
