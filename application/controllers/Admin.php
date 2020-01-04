@@ -950,6 +950,7 @@ class Admin extends CI_Controller {
 	                'password'  => $this->input->post('password'),
 	                'referal_id'=> $referal_id,
 	                'type'      => $status == TRUE ? '2' : '0',
+	                'position'   => $position
 	            ];
 
 	        //Type: 1 => admin, 2 => customer, 0 => deactive customer
