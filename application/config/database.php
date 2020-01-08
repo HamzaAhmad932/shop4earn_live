@@ -77,8 +77,8 @@ $host = $_SERVER['HTTP_HOST'];
 if($host=='localhost:8080' or $host=='localhost')
 {
 	$user = 'root';
-	$pass = 'password';
-	$_db = 'mlm_ci1';
+	$pass = '';
+	$_db = 'shop4earn';
 }else{
 	$user = 'shop4ear_mlm_ci';
 	$pass = '#,@c@mEZpx_6';
@@ -112,3 +112,5 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+$db['default']['port'] = 3308;
