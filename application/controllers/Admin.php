@@ -982,4 +982,26 @@ class Admin extends CI_Controller {
 		}
 	}
 
+
+	public function matchingCommission(){
+
+		if(isset($this->session->userdata['logged_in'])) {
+			$sess_data=$this->session->userdata('logged_in');
+            $data['full_name']=$sess_data['full_name'];
+            $data['user_id']=$this->Home_model->get_user_id();
+            $data['products'] = $this->Home_model->get_products_data();
+            
+            $this->load->view('Admin_header/admin_header');
+            $this->load->view('Admin_sidebar/admin_sidebar');
+            $this->load->view('Admin_topbar/admin_topbar',$data);
+            $this->load->view('Levels/matching_commission',$data);
+            $this->load->view('Admin_footer/admin_footer');
+		}
+		else{
+
+		    redirect('Home/Login1');
+		}
+
+	}
+
 }
