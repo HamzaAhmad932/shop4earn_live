@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $host = $_SERVER['HTTP_HOST'];
 if($host=='localhost:8080' or $host=='localhost')
 {
-    $config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/shop1/';
+    $config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/shop/';
 
 }
 else

@@ -59,6 +59,7 @@
                                 <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-envelope"></i><span>Settings<span class="pull-right"><i class="fa fa-angle-right"></i></span> </span></a>
                                 <ul class="list-unstyled" style="display: none;">
                                     <li><a href="<?php echo site_url('Admin/comission_setting'); ?>">Comission Settings</a></li>
+                                    <li><a href="<?php echo site_url('Admin/matchingCommission'); ?>">Matching Commission Setting</a></li>
                                     <li><a href="<?php echo site_url('Admin/level_criteria_se'); ?>">Level Criteria Settings</a></li>
                                 </ul>
                             </li>

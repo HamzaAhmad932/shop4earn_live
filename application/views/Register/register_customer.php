@@ -9,7 +9,7 @@
                    		<h3>Register Customer</h3>
                         <div style="color: red"><?php echo validation_errors(); ?></div>
                         <div class="card m-b-20">
-                            <div class="card-body">
+                            <div class="card-block">
                             	<form action="<?= base_url()."index.php/Admin/register_customer_validate" ?>" method="post">
                         <div class="row">
                             <div class="col-sm-12">
@@ -26,17 +26,17 @@
                                         <label>Position: </label>
                                         
                                         <div class="custom-control custom-radio custom-control-inline">
-                                          <input type="radio" id="left" name="positionGroup" class="custom-control-input" value="1">
+                                          <input type="radio" id="left" name="positionGroup" class="custom-control-input" checked="checked" value="1">
                                           <label class="custom-control-label" for="left">Left</label>
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline">
                                           <input type="radio" id="right" name="positionGroup" class="custom-control-input" value="2">
                                           <label class="custom-control-label" for="right">Right</label>
                                         </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                          <input type="radio" id="random" name="positionGroup" class="custom-control-input" checked="checked" value="3">
+                                        <!-- <div class="custom-control custom-radio custom-control-inline">
+                                          <input type="radio" id="random" name="positionGroup" class="custom-control-input"  value="3">
                                           <label class="custom-control-label" for="random">Random</label>
-                                        </div>
+                                        </div> -->
 
                                     </div>
 

@@ -13,7 +13,6 @@ class Home extends CI_Controller {
 
     public function recursive_fun($referal_id, $count){
 
-
         $this->db->select("GROUP_CONCAT(user_id) as my_ids");
         $this->db->where_in("parent_id", $referal_id);
         $this->db->where("type", "2");
@@ -28,8 +27,6 @@ class Home extends CI_Controller {
 
         if(count($childs) > 0){
             $c = count($childs) + $count;
-            // print_r(['count:'=> $count, 'child: '=> $childs, 'loop_count: '=> count($childs)]);
-            // echo "<br>";
             return $this->recursive_fun($childs, $c);
         }else{
 
@@ -105,6 +102,13 @@ class Home extends CI_Controller {
         $data['users'] = $report_array;
 
         $this->load->view('v2/table', $data);
+    }
+    
+    public function paired()
+    {
+        $user_id = 5;
+        $matching_comm = 100;
+        $matching_bonus = $this->Home_model->insertMatchingCommission($user_id,$matching_comm);
     }
 
 

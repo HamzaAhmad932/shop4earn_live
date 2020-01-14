@@ -173,6 +173,18 @@ class Users_model extends CI_Model{
 
         return $query->row()->payout;
     }
+
+    public function matchingCommission($user_id){
+
+        $this->db->select('*');
+        $this->db->from('users');
+        $this->db->where('user_id',$user_id);
+        // $this->db->where('type', '2');
+        $query = $this->db->get();
+
+        return $query->row()->matching_bonus;
+    }
+
     public function chk_current_bal($user_id){
         
         $this->db->select('*');
