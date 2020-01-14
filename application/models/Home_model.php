@@ -457,6 +457,150 @@ public function chk_referal_id($referal_id){
 
         $this->db->trans_complete();
 
+	}
+	
+	public function recursive_fun($referal_id, $count, $is_parent){
+
+        $this->db->select("GROUP_CONCAT(user_id) as my_ids");
+        $this->db->where_in("parent_id", $referal_id);
+		$this->db->where("type", "2");
+		if(!$is_parent){
+			$this->db->where("paired", "0");
+		}
+        $query = $this->db->get('users')->result_array();
+        $my_ids     =   $query[0]['my_ids'];
+
+        if(empty($my_ids)){
+            return $count;
+		}
+		
+        $childs = explode(',',$my_ids);
+
+        if(count($childs) > 0){
+            $c = count($childs) + $count;
+            return $this->recursive_fun($childs, $c, $is_parent);
+        }else{
+            return $count;
+        }
+	}
+	
+    public function insertMatchingCommission($user_id, $commission){
+
+        //$this->db->select_sum('direct_sponser_bonus');
+		// $this->db->where_in('id', $product_ids);
+		// $this->db->from('products');
+		// $query = $this->db->get();
+		// $result = $query->row();
+
+		$this->db->select('referal_id');
+		$this->db->where('user_id', $user_id);
+		$this->db->from('users');
+		$user_query = $this->db->get();
+		$user = $user_query->row();
+
+		$user_id = $user->referal_id;
+
+		$matching_bonus_amount = (float) $commission;
+
+		$this->db->select('user_id');
+		$this->db->where('parent_id', $user_id);
+		$this->db->where('type', '2');
+		$this->db->from('users');
+		$child_ids = $this->db->get()->result_array();
+
+
+		$parent = $this->recursive_fun($user_id, 0, true);
+		$c1 = 0;
+		$c2 = 0;
+		$m1 = 0;
+		$m2 = 0;
+		if(!empty($child_ids[0]['user_id'])){
+			$c1 = $this->recursive_fun($child_ids[0]['user_id'], 0, false);
+			$m1 = $this->recursive_fun($child_ids[0]['user_id'], 0, true)+1;
+		}
+
+		if(!empty($child_ids[1]['user_id'])){
+			$c2 = $this->recursive_fun($child_ids[1]['user_id'], 0, false);
+			$m2 = $this->recursive_fun($child_ids[1]['user_id'], 0, true)+1;
+		}
+
+		$level = null;
+
+		if($m1 != 0 && $m2 != 0){
+			if($m1 <= $m2){
+				$level = $m1;
+			}else{
+				$level = $m2;
+			}
+		}
+
+		if(!empty($level) && $c1 == $c2){
+
+			$this->db->select("*");
+			$this->db->from("levels_settings");
+			$levels_settings = $this->db->get()->result_array();
+
+			$this->db->select("*");
+			$this->db->from("matching_commission");
+			$matching_commission = $this->db->get()->row();
+			
+			$basic_users = 0;
+			$standard_users = 0;
+			$silver_users = 0;
+			$gold_users = 0;
+			$diamond_users = 0;
+			$more_than_diamond = 0;
+			
+			foreach($levels_settings as $ls){
+				if($ls['level_number'] == '1'){
+					$basic_users = $ls['refer_for_level'];
+				}
+				if($ls['level_number'] == '2'){
+					$standard_users = $ls['refer_for_level'];
+				}
+				if($ls['level_number'] == '3'){
+					$silver_users = $ls['refer_for_level'];
+				}
+				if($ls['level_number'] == '4'){
+					$gold_users = $ls['refer_for_level'];
+				}
+				if($ls['level_number'] == '5'){
+					$diamond_users = $ls['refer_for_level'];
+				}
+				if($ls['level_number'] == '6'){
+					$more_than_diamond = $ls['refer_for_level'];
+				}	
+			}
+
+			$percentage = 0;
+
+			if($level >= $basic_users){
+				$percentage = $matching_commission->basic;
+			}
+			elseif($level >= $standard_users){
+				$percentage = $matching_commission->standard;
+			}
+			elseif($level >= $silver_users){
+				$percentage = $matching_commission->silver;
+			}
+			elseif($level >= $gold_users){
+				$percentage = $matching_commission->gold;
+			}
+			elseif($level >= $diamond_users || $more_than_diamond){
+				$percentage = $matching_commission->diamond;
+			}
+
+			$amount = ($percentage/$matching_bonus_amount)*100;
+
+			$this->db->trans_start();
+			$this->db->set('matching_bonus', "matching_bonus + $amount", FALSE);
+			$this->db->where('user_id', $user->referal_id);
+			$this->db->where('type','2');
+			$this->db->update('users');
+			$this->db->trans_complete();
+			
+		}
+
     }
     
 public function get_upline_users($user_id, $comission , $test = false){
@@ -1756,6 +1900,7 @@ public function update_users_for_basic_comission($user_id, $comission){
 	    $this->db->set('quantity',$qty);
 	    $this->db->set('pv',$product->basic_vol);
 	    $this->db->set('direct',$product->direct_sponser_bonus);
+	    $this->db->set('matching_bonus',$product->matching_bonus);
 	    // $this->db->set('pv', 0);
 	    $this->db->set('bv',$product->booster_vol);
 	    // $this->db->set('bv',0);

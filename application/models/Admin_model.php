@@ -228,17 +228,20 @@ class Admin_model extends CI_Model{
 
         $basic_com = 0;
         $booster_com = 0;
-        $direct_comm = 0;
+		$direct_comm = 0;
+		$matching_comm = 0;
         $rows = $result->result();
         foreach ($rows as $user_product) {
             $basic_com += $user_product->pv * $user_product->quantity;
             $booster_com += $user_product->bv * $user_product->quantity;
             $direct_comm += $user_product->direct * $user_product->quantity;
+            $matching_comm += $user_product->matching_bonus * $user_product->quantity;
         }
 
 		$upline_users=$this->Home_model->get_upline_users($user_id, $basic_com);
         $insert_boster=$this->Home_model->insert_boster($user_id,$booster_com);
         $direct_bonus = $this->Home_model->insert_direct_bonus($user_id,$direct_comm);
+        $matching_bonus = $this->Home_model->insertMatchingCommission($user_id,$matching_comm);
 	}
 	public function get_levels_setting(){
 		$this->db->select('*');
@@ -779,6 +782,24 @@ return array_merge($level1, $level2,$level3,$level4,$level5,$level6,$level7,$lev
 
 		$this->db->where('id', $id);
 		$this->db->delete('slider');
+	}
+
+	public function getMatchingCommission()
+	{
+		$this->db->select("*");
+		$this->db->where('id', 1);
+		$this->db->from('matching_commission');
+		$query = $this->db->get();
+
+		return $query->row();
+	}
+
+	public function saveMatchingCommission($data)
+	{
+		//Update matching commission for only 1 row
+
+		$this->db->where('id', 1);
+		$chk = $this->db->update("matching_commission",$data);
 	}
 	 
 }

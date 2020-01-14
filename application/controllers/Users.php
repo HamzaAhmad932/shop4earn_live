@@ -30,6 +30,7 @@ class Users extends CI_Controller {
 		$data['direct_bonus']=$this->Users_model->direct_bonus($user_id);
 		$data['total_earn']=$this->Users_model->total_earn($user_id);
 		$data['payout'] = $this->Users_model->totalPayout($user_id);
+		$data['matching_comm'] = $this->Users_model->matchingCommission($user_id);
 		$member_level=$this->Users_model->member_level($user_id);
 		$data['downline'] = count($this->Admin_model->get_downline_data($user_id));
 

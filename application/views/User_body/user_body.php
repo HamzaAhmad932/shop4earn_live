@@ -136,6 +136,19 @@ Start right Content here -->
             </div>
             <!-- End eighth widget -->
 
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="mini-stat clearfix bg-white">
+                    <span class="mini-stat-icon bg-pink"><i class="fa fa-users"></i></span>
+                    <div class="mini-stat-info text-right">
+                      <span class="counter text-pink">
+                        <?php echo ($matching_comm == '' ? 0 : round($matching_comm, 2));?>
+                      </span>
+                      Matching Bonous
+                    </div>
+                </div>
+            </div>
+            <!-- End eighth widget -->
+
 
             <div class="col-md-6 col-lg-6 col-xl-3">
                 <div class="mini-stat clearfix bg-white">
