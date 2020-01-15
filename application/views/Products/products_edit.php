@@ -47,6 +47,13 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group row">
+                                                <label for="example-text-input" class="col-sm-2 col-form-label">Matching Bonus</label>
+                                                <div class="col-sm-10">
+    <input class="form-control" type="text" value="<?php echo $r->matching_bonus; ?>" name="matching_bonus" id="example-text-input" >
+                                                </div>
+                                            </div>
+
                                              <div class="form-group row">
                                                 <label for="example-text-input" class="col-sm-2 col-form-label">Purchase Cost</label>
                                                 <div class="col-sm-10">

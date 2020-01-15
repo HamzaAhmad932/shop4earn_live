@@ -328,7 +328,7 @@ class Admin extends CI_Controller {
 			 	'product_cat'=>$this->input->post('product_cat') ,
 			 	'related_product'=>$this->input->post('related_products') ,
 			 	'product_price'=>$this->input->post('rate') ,
-			 	'qty'=>$this->input->post('qty') ,
+			 	'qty'=>$this->input->post('qty'),
 			 	'discount'=>$this->input->post('discount') ,
 			 	'net_amount'=>$this->input->post('net_amount') ,
 			 	'c_date'=>$c_date,
@@ -337,7 +337,8 @@ class Admin extends CI_Controller {
 				'img_path' =>$target_file1,
 				'img_path1'=> $target_file2,
 				'img_path2'=> $target_file3,
-				'direct_sponser_bonus'=>$this->input->post('direct_sponser_bonus')
+				'direct_sponser_bonus'=>$this->input->post('direct_sponser_bonus'),
+				'matching_bonus'=>$this->input->post('matching_bonus')
 			);
 
 		  if($this->Admin_model->insert_product($data)){
@@ -436,7 +437,8 @@ class Admin extends CI_Controller {
     			 	'm_date'=>$m_date,
     			 	'img_path'=> $target_file,
     			 	'img_name'=> $data['file_name'],
-    			 	'direct_sponser_bonus'=> $this->input->post('direct_sponser_bonus')
+    			 	'direct_sponser_bonus'=> $this->input->post('direct_sponser_bonus'),
+    			 	'matching_bonus'=> $this->input->post('matching_bonus'),
     			 );
 		    $this->Admin_model->get_product_update($data,$id);
 		    redirect('Admin/Products');
@@ -457,7 +459,8 @@ class Admin extends CI_Controller {
 			 	'discount'=>$this->input->post('discount') ,
 			 	'net_amount'=>$this->input->post('net_amount') ,
 			 	'm_date'=>$m_date,
-			 	'direct_sponser_bonus'=> $this->input->post('direct_sponser_bonus')
+				 'direct_sponser_bonus'=> $this->input->post('direct_sponser_bonus'),
+				 'matching_bonus'=> $this->input->post('matching_bonus'),
 			 );
 		$this->Admin_model->get_product_update($data,$id);
 		redirect('Admin/Products');
