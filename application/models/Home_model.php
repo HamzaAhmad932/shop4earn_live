@@ -465,7 +465,7 @@ public function chk_referal_id($referal_id){
         $this->db->where_in("parent_id", $referal_id);
 		$this->db->where("type", "2");
 		if(!$is_parent){
-			$this->db->where("paired", "0");
+			$this->db->where("paired", "1");
 		}
         $query = $this->db->get('users')->result_array();
         $my_ids     =   $query[0]['my_ids'];
@@ -478,10 +478,30 @@ public function chk_referal_id($referal_id){
 
         if(count($childs) > 0){
             $c = count($childs) + $count;
-            return $this->recursive_fun($childs, $c, $is_parent);
+            return $this->recursive_fun($childs, $c, false);
         }else{
             return $count;
         }
+	}
+
+	public function findPairedNode($referal_id, $position)
+	{
+		$this->db->select('*');
+		$this->db->where('parent_id', $referal_id);
+		$this->db->where('type', '2');
+		$this->db->where_in('position', $position);
+		$this->db->from('users');
+		$child = $this->db->get()->row();
+
+		if(!empty($child)){
+			if($child->paired == '0'){
+				return $child;
+			}else{
+				return $this->findPairedNode($child->user_id, $position);
+			}
+		}else{
+			return null;
+		}
 	}
 	
     public function insertMatchingCommission($user_id, $commission){
@@ -492,49 +512,34 @@ public function chk_referal_id($referal_id){
 		// $query = $this->db->get();
 		// $result = $query->row();
 
-		$this->db->select('referal_id');
+		$this->db->select('*');
 		$this->db->where('user_id', $user_id);
 		$this->db->from('users');
 		$user_query = $this->db->get();
-		$user = $user_query->row();
+		$pair1 = $user_query->row();
 
-		$user_id = $user->referal_id;
+		$referal_id = $pair1->referal_id;
+		$position = $pair1->position;
+		$pos_to_search = $position == '1' ? '2' : '1';
+		$pair1_commission = (float) $commission;
 
-		$matching_bonus_amount = (float) $commission;
+		$pair2 = $this->findPairedNode($referal_id, $pos_to_search);
 
-		$this->db->select('user_id');
-		$this->db->where('parent_id', $user_id);
-		$this->db->where('type', '2');
-		$this->db->from('users');
-		$child_ids = $this->db->get()->result_array();
+		if(!empty($pair2)){
 
+			$this->db->select('*');
+			$this->db->from('tbl_cart_product');
+			$this->db->where('user_id', $pair2->user_id);
+			$result = $this->db->get();
 
-		$parent = $this->recursive_fun($user_id, 0, true);
-		$c1 = 0;
-		$c2 = 0;
-		$m1 = 0;
-		$m2 = 0;
-		if(!empty($child_ids[0]['user_id'])){
-			$c1 = $this->recursive_fun($child_ids[0]['user_id'], 0, false);
-			$m1 = $this->recursive_fun($child_ids[0]['user_id'], 0, true)+1;
-		}
-
-		if(!empty($child_ids[1]['user_id'])){
-			$c2 = $this->recursive_fun($child_ids[1]['user_id'], 0, false);
-			$m2 = $this->recursive_fun($child_ids[1]['user_id'], 0, true)+1;
-		}
-
-		$level = null;
-
-		if($m1 != 0 && $m2 != 0){
-			if($m1 <= $m2){
-				$level = $m1;
-			}else{
-				$level = $m2;
+			$pair2_commission = 0;
+			$rows = $result->result();
+			foreach ($rows as $user_product) {
+				$pair2_commission += $user_product->matching_bonus * $user_product->quantity;
 			}
-		}
 
-		if(!empty($level) && $c1 == $c2){
+			$sub_members_of_referal_user = $this->recursive_fun($referal_id, 0, true);
+
 
 			$this->db->select("*");
 			$this->db->from("levels_settings");
@@ -574,33 +579,51 @@ public function chk_referal_id($referal_id){
 
 			$percentage = 0;
 
-			if($level >= $basic_users){
+			if($sub_members_of_referal_user >= $basic_users){
 				$percentage = $matching_commission->basic;
 			}
-			elseif($level >= $standard_users){
+			elseif($sub_members_of_referal_user >= $standard_users){
 				$percentage = $matching_commission->standard;
 			}
-			elseif($level >= $silver_users){
+			elseif($sub_members_of_referal_user >= $silver_users){
 				$percentage = $matching_commission->silver;
 			}
-			elseif($level >= $gold_users){
+			elseif($sub_members_of_referal_user >= $gold_users){
 				$percentage = $matching_commission->gold;
 			}
-			elseif($level >= $diamond_users || $more_than_diamond){
+			elseif($sub_members_of_referal_user >= $diamond_users || $more_than_diamond){
 				$percentage = $matching_commission->diamond;
 			}
 
-			$amount = ($percentage/$matching_bonus_amount)*100;
+			$matching_bonus_amount = $pair1_commission + $pair2_commission;
+
+			$amount = ($percentage/100)*$matching_bonus_amount;
+
+			// var_dump([
+			// 			'pair1'=>$pair1, 
+			// 			'pair2'=>$pair2,
+			// 			'referal_sub_members'=>$sub_members_of_referal_user,
+			// 			'comm_1'=>$pair1_commission,
+			// 			'comm_2'=>$pair2_commission,
+			// 			'percent'=> $percentage,
+			// 			'total_amount'=>$matching_bonus_amount,
+			// 			'comm_to_deliver'=>$amount
+			// 			]);
+			// die();
+			// return;
 
 			$this->db->trans_start();
 			$this->db->set('matching_bonus', "matching_bonus + $amount", FALSE);
-			$this->db->where('user_id', $user->referal_id);
+			$this->db->where('user_id', $referal_id);
 			$this->db->where('type','2');
 			$this->db->update('users');
-			$this->db->trans_complete();
-			
-		}
 
+			$this->db->set('paired', 1);
+			$this->db->where_in('id', [$pair1->id, $pair2->id]);
+			$this->db->update('users');
+			$this->db->trans_complete();
+
+		}
     }
     
 public function get_upline_users($user_id, $comission , $test = false){

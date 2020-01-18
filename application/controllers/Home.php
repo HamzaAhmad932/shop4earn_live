@@ -106,8 +106,8 @@ class Home extends CI_Controller {
     
     public function paired()
     {
-        $user_id = 5;
-        $matching_comm = 100;
+        $user_id = 9;
+        $matching_comm = 2000;
         $matching_bonus = $this->Home_model->insertMatchingCommission($user_id,$matching_comm);
     }
 
